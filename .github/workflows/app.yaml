@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     paths:
-      - 'project1_app/**'
+      - 'monorepo-test/project1/project1_app/**'
     branches:
       - main
     actions:
