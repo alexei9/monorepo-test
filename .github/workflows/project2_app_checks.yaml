@@ -34,5 +34,5 @@ jobs:
           
       - name: Lint with flake8
         run: |
-          cd project1/project2_app
+          cd project2/project2_app
           flake8 . --count --show-source --statistics --max-line-length=120
