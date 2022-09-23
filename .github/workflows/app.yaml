@@ -3,8 +3,6 @@ name: Project1 flake8 check
 on:
   workflow_dispatch:
   push:
-    paths:
-      - 'project1_app/*'
   pull_request:
     branches:
       - main
