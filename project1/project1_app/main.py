@@ -1,7 +1,7 @@
 # This is a sample Python script.
 
 # Press Shift+F10 to execute it or replace it with your code.
-# ions, and settings and a test for alex that the length is way. ions, and settings and a test for alex that the length is way. ions, and settings and a test for alex that the length is way. ions, and settings and a test for alex that the length is way.
+# ions, and settings and a test for alex that the length is way. ions, and
 
 
 def print_hi(name):
