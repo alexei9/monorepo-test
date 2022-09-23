@@ -1,7 +1,7 @@
 # This is a sample Python script.
 
 # Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere sfor classeds, files, tsool windows, acisos, and
+# Press Double Shift to search everywhere sfor classeds, files, tsool windows, acisos, and89u2345890u34809423908342890908432908
 
 
 def print_hi(name):
