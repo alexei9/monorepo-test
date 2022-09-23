@@ -27,10 +27,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install flake8 pytest 
-          cd project1
+          cd project1/project1_app
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           
       - name: Lint with flake8
         run: |
-          cd project1
+          cd project1/project1_app
           flake8 . --count --show-source --statistics --max-line-length=120
