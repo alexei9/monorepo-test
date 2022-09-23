@@ -1,4 +1,4 @@
-name: Project1 flake8 check
+name: Project2 flake8 check
 
 on:
   workflow_dispatch:
