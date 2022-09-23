@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - '**project1_app**'
+      - 'project1/project1_app/**'
   pull_request:
     branches:
       - main
     paths:
-      - '**project1_app**'
+      - 'project1/project1_app/**'
     actions:
       - opened
       - edited

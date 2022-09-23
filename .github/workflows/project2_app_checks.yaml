@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - '**project2_app**'
+      - 'project2/project2_app/**'
     actions:
       - opened
       - edited
