@@ -8,6 +8,8 @@ on:
   pull_request:
     branches:
       - main
+    paths:
+      - '**project1_app**'
     actions:
       - opened
       - edited
