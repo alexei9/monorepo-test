@@ -3,7 +3,7 @@ from aws_cdk import (
     Stack,
     # aws_sqs as sqs,
 )
-from constructs import Construct
+from salesforce_prototype_cdk.constructs import Construct
 
 class SalesforcePrototypeCdkStack(Stack):
 

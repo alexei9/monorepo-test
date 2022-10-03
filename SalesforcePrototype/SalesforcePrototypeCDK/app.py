@@ -1,28 +1,100 @@
 #!/usr/bin/env python3
-import os
-
 import aws_cdk as cdk
+import os
+import salesforce_prototype_cdk.utilities.context_manager as ctxmgr
 
-from salesforce_prototype_cdk.salesforce_prototype_cdk_stack import SalesforcePrototypeCdkStack
+from salesforce_prototype_cdk.utilities.docker_lifecycle_rules import DockerImageLifecycleRules
 
+from salesforce_prototype_cdk.stacks.app_stack \
+    import SalesforcePrototypeAppProperties, SalesforcePrototypeAppStack
+
+from salesforce_prototype_cdk.stacks.pipeline_stack \
+    import SalesforcePrototypePipelineStack
+
+context = ctxmgr.ContextManager()
 
 app = cdk.App()
-SalesforcePrototypeCdkStack(app, "SalesforcePrototypeCdkStack",
-    # If you don't specify 'env', this stack will be environment-agnostic.
-    # Account/Region-dependent features and context lookups will not work,
-    # but a single synthesized template can be deployed anywhere.
 
-    # Uncomment the next line to specialize this stack for the AWS Account
-    # and Region that are implied by the current CLI configuration.
+# personal dev stack (a single standalone environment)
 
-    #env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
-
-    # Uncomment the next line if you know exactly what Account and Region you
-    # want to deploy the stack to. */
-
-    #env=cdk.Environment(account='123456789012', region='us-east-1'),
-
-    # For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html
+if os.getenv('CODEBUILD_CI', '') == '':
+    pers_app_properties = SalesforcePrototypeAppProperties(
+        context=context,
+        environment=context.environments.pers,
+        create_repo=True,
+        create_lifecycle_rules=DockerImageLifecycleRules.NON_PROD,
+        parameter_definitions=context.systems_manager_parameters,
+        parameter_values=context.environments.pers.systems_manager_parameter_values,
+        task_definition_env_vars=context.environments.pers.task_definition_env_vars
     )
+    pers_app_stack = SalesforcePrototypeAppStack(app, 'pers-app', pers_app_properties)
+
+# dev app stack
+
+dev_app_properties = SalesforcePrototypeAppProperties(
+    context=context,
+    environment=context.environments.dev,
+    create_repo=True,
+    create_grant_read_to_account_ids=[context.environments.stg.account_id],
+    create_lifecycle_rules=DockerImageLifecycleRules.NON_PROD,
+    parameter_definitions=context.systems_manager_parameters,
+    parameter_values=context.environments.dev.systems_manager_parameter_values,
+    task_definition_env_vars=context.environments.dev.task_definition_env_vars
+)
+dev_app_stack = SalesforcePrototypeAppStack(app, 'dev-app', dev_app_properties)
+
+# resources in one stack cannot reference another, so the cross environment/account repo link is looser
+# i.e. we must generate the name/arn the same here as in the SalesforcePrototypeEcrRepoConstruct class
+
+dev_context = context.environments.dev
+dev_repo_name = context.get_resource_base_name(dev_context.environment_name, '',
+                                               dev_context.settings.use_default_root_name).lower()
+dev_repo_arn = f'arn:aws:ecr:{context.region}:{dev_context.account_id}:repository/{dev_repo_name}'
+
+# test app stack
+
+test_app_properties = SalesforcePrototypeAppProperties(
+    context=context,
+    environment=context.environments.test,
+    create_repo=False,
+    existing_repo_arn=dev_repo_arn,
+    parameter_definitions=context.systems_manager_parameters,
+    parameter_values=context.environments.test.systems_manager_parameter_values,
+    task_definition_env_vars=context.environments.test.task_definition_env_vars
+)
+test_app_stack = SalesforcePrototypeAppStack(app, 'test-app', test_app_properties)
+
+# stg app stack
+
+stg_app_properties = SalesforcePrototypeAppProperties(
+    context=context,
+    environment=context.environments.stg,
+    create_repo=False,
+    existing_repo_arn=dev_repo_arn,
+    parameter_definitions=context.systems_manager_parameters,
+    parameter_values=context.environments.stg.systems_manager_parameter_values,
+    task_definition_env_vars=context.environments.stg.task_definition_env_vars
+)
+stg_app_stack = SalesforcePrototypeAppStack(app, 'stg-app', stg_app_properties)
+
+# prod app stack
+
+prod_app_properties = SalesforcePrototypeAppProperties(
+    context=context,
+    environment=context.environments.prod,
+    create_repo=True,
+    create_grant_write_to_account_ids=[context.environments.dev.account_id],
+    create_lifecycle_rules=DockerImageLifecycleRules.PROD,
+    parameter_definitions=context.systems_manager_parameters,
+    parameter_values=context.environments.prod.systems_manager_parameter_values,
+    task_definition_env_vars=context.environments.prod.task_definition_env_vars
+)
+prod_app_stack = SalesforcePrototypeAppStack(app, 'prod-app', prod_app_properties)
+
+# deployment pipeline
+
+pipeline_stack = SalesforcePrototypePipelineStack(app, 'pipeline', context)
+
+# done - all stacks defined
 
 app.synth()

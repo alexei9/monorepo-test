@@ -31,6 +31,260 @@
     "@aws-cdk/core:target-partitions": [
       "aws",
       "aws-cn"
-    ]
+    ],
+    "cruk-context": {
+      "app-info": {
+        "product-name": "BI",
+        "support-level": "",
+        "cost-centre": "",
+        "sub-project-code": "",
+        "root-name": "AGEORGE",
+        "service-name": "Salesforce-Prototype"
+      },
+      "code-connection": {
+        "arn": "arn:aws:codestar-connections:eu-west-2:955432237571:connection/b39d71e1-153d-4524-a5c0-bf8989d9bf7d",
+        "github-owner-name": "alexei9",
+        "github-repo-name": "monorepo-test",
+        "github-branch-name": "main"
+      },
+      "pipeline": {
+        "trigger-on-push": false,
+        "docker-deploy": true
+      },
+      "systems-manager-parameters": {
+        "enabled": "n",
+        "dummyparameter": "dummyvalue",
+        "dummyparameter2": "dummyvalue2",
+        "dummyparameter3": "dummyvalue3",
+        "dummyparameter4": "dummyvalue4"
+      },
+      "region": "eu-west-2",
+      "environments": {
+        "sbox": {
+          "account-id": "373556034990",
+          "vpc-id": "vpc-05a956a3e89cc14ce",
+          "private-subnet-ids": [
+            "subnet-0013a6b9f2462d312",
+            "subnet-0fcde8c889d80feed",
+            "subnet-04090b46cf196b5b8"
+          ],
+          "settings": {
+            "use-default-root-name": "Y",
+            "snowflake-principal-arn": "",
+            "snowflake-principal-external-id": "",
+            "notifications-email-address": ""
+          },
+          "systems-manager-parameter-values": {
+            "enabled": "N",
+            "dummyparameter": "dummyvalue",
+            "dummyparameter2": "dummyvalue2",
+            "dummyparameter3": "dummyvalue3",
+            "dummyparameter4": "dummyvalue4"
+          },
+          "task-definition-env-vars": {
+            "CRUK_SERVICE_NAME": "Salesforce-Prototype-ELT",
+            "CRUK_ENVIRONMENT_NAME": "sbox",
+            "CRUK_DELETE_DATA_FILES": "Y",
+            "CRUK_SNOWFLAKE_ACCOUNT_NAME": "cruk.eu-west-2.privatelink",
+            "CRUK_SNOWFLAKE_USERNAME": "SVC_SBOX_SALESFORCE_PROTOTYPE",
+            "CRUK_SNOWFLAKE_ROLE_NAME": "SBOX_SALESFORCE_PROTOTYPE_ADMIN",
+            "CRUK_SNOWFLAKE_WH_NAME": "NON_PROD_ALL",
+            "CRUK_SNOWFLAKE_DB_NAME": "SBOX_SALESFORCE_PROTOTYPE"
+          }
+        },
+        "pers": {
+          "account-id": "955432237571",
+          "vpc-id": "vpc-0ed78d1d0d9b9015e",
+          "private-subnet-ids": [
+            "subnet-05516e70e29d6b66a",
+            "subnet-00c176d9edad2e786",
+            "subnet-0735a5fdfd3e5e54e"
+          ],
+          "settings": {
+            "use-default-root-name": "Y",
+            "snowflake-principal-arn": "",
+            "snowflake-principal-external-id": "",
+            "notifications-email-address": ""
+          },
+          "systems-manager-parameter-values": {
+            "enabled": "N",
+            "dummyparameter": "dummyvalue",
+            "dummyparameter2": "dummyvalue2",
+            "dummyparameter3": "dummyvalue3",
+            "dummyparameter4": "dummyvalue4"
+          },
+          "task-definition-env-vars": {
+            "CRUK_SERVICE_NAME": "Salesforce-Prototype-ELT",
+            "CRUK_ENVIRONMENT_NAME": "ageorge",
+            "CRUK_DELETE_DATA_FILES": "Y",
+            "CRUK_SNOWFLAKE_ACCOUNT_NAME": "cruk.eu-west-2.privatelink",
+            "CRUK_SNOWFLAKE_USERNAME": "SVC_AGEORGE_SALESFORCE_PROTOTYPE",
+            "CRUK_SNOWFLAKE_ROLE_NAME": "AGEORGE_SALESFORCE_PROTOTYPE_ADMIN",
+            "CRUK_SNOWFLAKE_WH_NAME": "NON_PROD_ALL",
+            "CRUK_SNOWFLAKE_DB_NAME": "AGEORGE_SALESFORCE_PROTOTYPE"
+          }
+        },
+        "dev": {
+          "account-id": "955432237571",
+          "vpc-id": "vpc-0ed78d1d0d9b9015e",
+          "private-subnet-ids": [
+            "subnet-05516e70e29d6b66a",
+            "subnet-00c176d9edad2e786",
+            "subnet-0735a5fdfd3e5e54e"
+          ],
+          "settings": {
+            "use-default-root-name": "Y",
+            "snowflake-principal-arn": "",
+            "snowflake-principal-external-id": "",
+            "notifications-email-address": ""
+          },
+          "systems-manager-parameter-values": {
+            "enabled": "Y",
+            "dummyparameter": "dummyvalue",
+            "dummyparameter2": "dummyvalue2",
+            "dummyparameter3": "dummyvalue3",
+            "dummyparameter4": "dummyvalue4"
+          },
+          "task-definition-env-vars": {
+            "CRUK_SERVICE_NAME": "Salesforce-Prototype-ELT",
+            "CRUK_ENVIRONMENT_NAME": "dev",
+            "CRUK_DELETE_DATA_FILES": "Y",
+            "CRUK_SNOWFLAKE_ACCOUNT_NAME": "cruk.eu-west-2.privatelink",
+            "CRUK_SNOWFLAKE_USERNAME": "AG_SVC_DEV_SALESFORCE_PROTOTYPE",
+            "CRUK_SNOWFLAKE_ROLE_NAME": "AG_DEV_SALESFORCE_PROTOTYPE_ADMIN",
+            "CRUK_SNOWFLAKE_WH_NAME": "NON_PROD_ALL",
+            "CRUK_SNOWFLAKE_DB_NAME": "AG_DEV_SALESFORCE_PROTOTYPE"
+          }
+        },
+        "test": {
+          "account-id": "955432237571",
+          "vpc-id": "vpc-0ed78d1d0d9b9015e",
+          "private-subnet-ids": [
+            "subnet-05516e70e29d6b66a",
+            "subnet-00c176d9edad2e786",
+            "subnet-0735a5fdfd3e5e54e"
+          ],
+          "settings": {
+            "use-default-root-name": "Y",
+            "snowflake-principal-arn": "",
+            "snowflake-principal-external-id": "",
+            "notifications-email-address": ""
+          },
+          "systems-manager-parameter-values": {
+            "enabled": "N",
+            "dummyparameter": "dummyvalue",
+            "dummyparameter2": "dummyvalue2",
+            "dummyparameter3": "dummyvalue3",
+            "dummyparameter4": "dummyvalue4"
+          },
+          "task-definition-env-vars": {
+            "CRUK_SERVICE_NAME": "Salesforce-Prototype-ELT",
+            "CRUK_ENVIRONMENT_NAME": "test",
+            "CRUK_DELETE_DATA_FILES": "Y",
+            "CRUK_SNOWFLAKE_ACCOUNT_NAME": "cruk.eu-west-2.privatelink",
+            "CRUK_SNOWFLAKE_USERNAME": "AG_SVC_TEST_SALESFORCE_PROTOTYPE",
+            "CRUK_SNOWFLAKE_ROLE_NAME": "AG_TEST_SALESFORCE_PROTOTYPE_ADMIN",
+            "CRUK_SNOWFLAKE_WH_NAME": "NON_PROD_ALL",
+            "CRUK_SNOWFLAKE_DB_NAME": "AG_TEST_SALESFORCE_PROTOTYPE"
+          }
+        },
+        "int": {
+          "account-id": "168177810776",
+          "vpc-id": "vpc-0ed78d1d0d9b9015e",
+          "private-subnet-ids": [
+            "subnet-05516e70e29d6b66a",
+            "subnet-00c176d9edad2e786",
+            "subnet-0735a5fdfd3e5e54e"
+          ],
+          "settings": {
+            "use-default-root-name": "Y",
+            "snowflake-principal-arn": "",
+            "snowflake-principal-external-id": "",
+            "notifications-email-address": ""
+          },
+          "systems-manager-parameter-values": {
+            "enabled": "N",
+            "dummyparameter": "dummyvalue",
+            "dummyparameter2": "dummyvalue2",
+            "dummyparameter3": "dummyvalue3",
+            "dummyparameter4": "dummyvalue4"
+          },
+          "task-definition-env-vars": {
+            "CRUK_SERVICE_NAME": "Salesforce-Prototype-ELT",
+            "CRUK_ENVIRONMENT_NAME": "int",
+            "CRUK_DELETE_DATA_FILES": "Y",
+            "CRUK_SNOWFLAKE_ACCOUNT_NAME": "cruk.eu-west-2.privatelink",
+            "CRUK_SNOWFLAKE_USERNAME": "SVC_INT_SALESFORCE_PROTOTYPE",
+            "CRUK_SNOWFLAKE_ROLE_NAME": "INT_SALESFORCE_PROTOTYPE_ADMIN",
+            "CRUK_SNOWFLAKE_WH_NAME": "NON_PROD_ALL",
+            "CRUK_SNOWFLAKE_DB_NAME": "INT_SALESFORCE_PROTOTYPE"
+          }
+        },
+        "stg": {
+          "account-id": "896446010248",
+          "vpc-id": "vpc-09d085203fb33443c",
+          "private-subnet-ids": [
+            "subnet-0db22575f00e3afba",
+            "subnet-074ae8b99aa890b73",
+            "subnet-0cd7853a189a25b3e"
+          ],
+          "settings": {
+            "use-default-root-name": "Y",
+            "snowflake-principal-arn": "",
+            "snowflake-principal-external-id": "",
+            "notifications-email-address": ""
+          },
+          "systems-manager-parameter-values": {
+            "enabled": "N",
+            "dummyparameter": "dummyvalue",
+            "dummyparameter2": "dummyvalue2",
+            "dummyparameter3": "dummyvalue3",
+            "dummyparameter4": "dummyvalue4"
+          },
+          "task-definition-env-vars": {
+            "CRUK_SERVICE_NAME": "Salesforce-Prototype-ELT",
+            "CRUK_ENVIRONMENT_NAME": "stg",
+            "CRUK_DELETE_DATA_FILES": "Y",
+            "CRUK_SNOWFLAKE_ACCOUNT_NAME": "cruk.eu-west-2.privatelink",
+            "CRUK_SNOWFLAKE_USERNAME": "SVC_STG_SALESFORCE_PROTOTYPE",
+            "CRUK_SNOWFLAKE_ROLE_NAME": "STG_SALESFORCE_PROTOTYPE_ADMIN",
+            "CRUK_SNOWFLAKE_WH_NAME": "NON_PROD_ALL",
+            "CRUK_SNOWFLAKE_DB_NAME": "STG_SALESFORCE_PROTOTYPE"
+          }
+        },
+        "prod": {
+          "account-id": "555315546283",
+          "vpc-id": "vpc-09d085203fb33443c",
+          "private-subnet-ids": [
+            "subnet-0db22575f00e3afba",
+            "subnet-074ae8b99aa890b73",
+            "subnet-0cd7853a189a25b3e"
+          ],
+          "settings": {
+            "use-default-root-name": "Y",
+            "snowflake-principal-arn": "",
+            "snowflake-principal-external-id": "",
+            "notifications-email-address": ""
+          },
+          "systems-manager-parameter-values": {
+            "enabled": "N",
+            "dummyparameter": "dummyvalue",
+            "dummyparameter2": "dummyvalue2",
+            "dummyparameter3": "dummyvalue3",
+            "dummyparameter4": "dummyvalue4"
+          },
+          "task-definition-env-vars": {
+            "CRUK_SERVICE_NAME": "Salesforce-Prototype-ELT",
+            "CRUK_ENVIRONMENT_NAME": "prod",
+            "CRUK_DELETE_DATA_FILES": "Y",
+            "CRUK_SNOWFLAKE_ACCOUNT_NAME": "cruk.eu-west-2.privatelink",
+            "CRUK_SNOWFLAKE_USERNAME": "SVC_PROD_SALESFORCE_PROTOTYPE",
+            "CRUK_SNOWFLAKE_ROLE_NAME": "PROD_SALESFORCE_PROTOTYPE_ADMIN",
+            "CRUK_SNOWFLAKE_WH_NAME": "NON_PROD_ALL",
+            "CRUK_SNOWFLAKE_DB_NAME": "PROD_SALESFORCE_PROTOTYPE"
+          }
+        }
+      }
+    }
   }
 }
