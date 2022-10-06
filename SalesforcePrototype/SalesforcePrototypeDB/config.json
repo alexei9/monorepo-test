@@ -1,0 +1,48 @@
+{
+  "type": "database-builder-config",
+  "cicd-enabled": true,
+  "directory-execution": [
+    {
+      "directory": "Preparation",
+      "execution-type": "PREPARATION"
+    },
+    {
+      "directory": "Migrations",
+      "execution-type": "ONCE_ONLY"
+    },
+    {
+      "directory": "Views",
+      "execution-type": "WHEN_CHANGED"
+    },
+    {
+      "directory": "Stored Procedures",
+      "execution-type": "WHEN_CHANGED"
+    },
+    {
+      "directory": "Completion",
+      "execution-type": "ALWAYS"
+    }
+  ],
+  "variables": {
+    "SOLUTION_NAME": "AG_SALESFORCE",
+    "solution_name": "ag_salesforce",
+    "solution-name": "ag-salesforce"
+  },
+  "environments": {
+    "dev": {
+      "cicd-enabled": true,
+      "variables": {
+        "ENV": "DEV",
+        "env": "dev",
+        "SERVICE_USER_NAME": "SVC_DEV_AG_SALESFORCE",
+        "ADMIN_ROLE_NAME": "DEV_AG_SALESFORCE_ADMIN",
+        "READER_ROLE_NAME": "DEV_AG_SALESFORCE_READER",
+        "IMPLEMENTATION_DB_NAME": "DEV_AG_SALESFORCE",
+        "PRESENTATION_DB_NAME": "DEV_CRUK",
+        "WAREHOUSE_NAME": "NON_PROD_ALL",
+        "STORAGE_INTEGRATION_NAME": "DEV_AG_SALESFORCE",
+        "AWS_STORAGE_ROLE_ARN": "arn:aws:iam::955432237571:role/AGEORGE-Dev-Salesforce-Proto-snowflakeroleEA171944-GVI3WX62JILW"
+      }
+    }
+  }
+}

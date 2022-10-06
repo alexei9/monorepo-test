@@ -1,0 +1,24 @@
+-- CICD-VAR: SOLUTION_NAME
+-- CICD-VAR: ENV
+-- CICD-VAR: ADMIN_ROLE_NAME
+-- CICD-VAR: IMPLEMENTATION_DB_NAME
+-- CICD-VAR: WAREHOUSE_NAME
+
+BEGIN
+    USE ROLE {ADMIN_ROLE_NAME};
+    USE WAREHOUSE {WAREHOUSE_NAME};
+    USE DATABASE {IMPLEMENTATION_DB_NAME};
+
+    CREATE TABLE BEIS_LOAD.ENERGY_USAGE
+    (
+        EnergyType          VARCHAR(20),
+        YEAR                INT,
+        PostCode            VARCHAR(20),
+        MeterCount          INT,
+        TotalConsumption    NUMBER(24, 12),
+        MeanConsumption     NUMBER(24, 12),
+        MedianConsumption   NUMBER(24, 12)
+    );
+
+    GRANT OWNERSHIP ON TABLE BEIS_LOAD.ENERGY_USAGE TO ROLE {ADMIN_ROLE_NAME};
+END;
