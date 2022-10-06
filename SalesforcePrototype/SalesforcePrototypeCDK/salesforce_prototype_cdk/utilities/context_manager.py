@@ -95,6 +95,7 @@ class PipelineContext:
         """
         self.trigger_on_push = bool(context_data['trigger-on-push'])
         self.docker_deploy = bool(context_data['docker-deploy'])
+        self.snowflake_db_deploy = bool(context_data['snowflake-db-deploy'])
 
 
 class EnvironmentSettingsContext:

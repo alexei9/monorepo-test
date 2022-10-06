@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8e35d058-6bf2-4b75-8250-99271e26b295" name="Changes" comment="SnowflakeBuilder gubbins (it works locally)">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/salesforce_prototype_cdk/common/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/salesforce_prototype_cdk/common/common_funcs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/SalesforcePrototypeCDK.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SalesforcePrototypeCDK.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cdk.json" beforeDir="false" afterPath="$PROJECT_DIR$/cdk.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/salesforce_prototype_cdk/stacks/pipeline_stack.py" beforeDir="false" afterPath="$PROJECT_DIR$/salesforce_prototype_cdk/stacks/pipeline_stack.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/salesforce_prototype_cdk/utilities/context_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/salesforce_prototype_cdk/utilities/context_manager.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/../.." value="feature/SalesforcePrototpe-BIP-999" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2FMPoa30Oge5MA9xsE5JpkXC4jp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "C:/Python/monorepo-test/SalesforcePrototype/SalesforcePrototypeCDK",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Python\monorepo-test\SalesforcePrototype\SalesforcePrototypeCDK\salesforce_prototype_cdk" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="SalesforcePrototypeCDK" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\PyVEnvs\SalesforcePrototype\SalesforcePrototypeCDK\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8e35d058-6bf2-4b75-8250-99271e26b295" name="Changes" comment="" />
+      <created>1664299160421</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1664299160421</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Initial CDK setup">
+      <created>1664300133716</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1664300133716</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Change scheduled to 54th minute to attempt to fix EventBridge">
+      <created>1664808570926</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1664808570926</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Change scheduled to 12th minute to attempt to fix EventBridge">
+      <created>1664809067027</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1664809067027</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Change scheduled to 45th minute to attempt to fix EventBridge">
+      <created>1664814372447</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1664814372447</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Deletes unneccesary relic cdk stack file">
+      <created>1664980003392</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1664980003392</updated>
+    </task>
+    <task id="LOCAL-00006" summary="SnowflakeBuilder gubbins (it works locally)">
+      <created>1665047327633</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1665047327633</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial CDK setup" />
+    <MESSAGE value="Change scheduled to 54th minute to attempt to fix EventBridge" />
+    <MESSAGE value="Change scheduled to 12th minute to attempt to fix EventBridge" />
+    <MESSAGE value="Change scheduled to 45th minute to attempt to fix EventBridge" />
+    <MESSAGE value="Deletes unneccesary relic cdk stack file" />
+    <MESSAGE value="SnowflakeBuilder gubbins (it works locally)" />
+    <option name="LAST_COMMIT_MESSAGE" value="SnowflakeBuilder gubbins (it works locally)" />
+  </component>
+</project>

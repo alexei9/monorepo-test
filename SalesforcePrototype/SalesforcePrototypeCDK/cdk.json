@@ -49,7 +49,8 @@
       },
       "pipeline": {
         "trigger-on-push": false,
-        "docker-deploy": true
+        "docker-deploy": true,
+        "snowflake-db-deploy": true
       },
       "systems-manager-parameters": {
         "enabled": "n",
@@ -134,7 +135,7 @@
           ],
           "settings": {
             "use-default-root-name": "Y",
-            "snowflake-principal-arn": "",
+            "snowflake-principal-arn": "arn:aws:iam::955432237571:role/AGEORGE-Dev-Salesforce-Proto-snowflakeroleEA171944-GVI3WX62JILW",
             "snowflake-principal-external-id": "",
             "notifications-email-address": ""
           },

@@ -3,6 +3,7 @@ from aws_cdk import (
     aws_codebuild,
     aws_codepipeline,
     aws_codepipeline_actions,
+    aws_ec2,
     aws_iam,
     aws_logs,
     aws_s3,
@@ -12,6 +13,7 @@ from aws_cdk import (
     Stack
 )
 from constructs import Construct
+from salesforce_prototype_cdk.common import common_funcs
 
 
 class SalesforcePrototypePipelineStack(Stack):
@@ -64,14 +66,23 @@ class SalesforcePrototypePipelineStack(Stack):
         synth_artifact, synth_action = self.create_synth_action(source_artifact, synth_project)
         pipeline.add_stage(stage_name='Build', actions=[synth_action])
 
+        # Add Snowflake CICD project
+        snowflake_cicd_project = None
+        if context.pipeline.snowflake_db_deploy:
+            snowflake_cicd_project = self.create_snowflake_cicd_project()
+
         # Add Development stage
         dev_env = self.context.environments.dev
         dev_create_change_set_action, dev_execute_change_set_action = self.create_cloud_formation_actions(
             dev_env, synth_artifact, 1
         )
         dev_actions = [dev_create_change_set_action, dev_execute_change_set_action]
+        if context.pipeline.snowflake_db_deploy:
+            dev_snowflake_deploy_action = self.create_snowflake_cicd_action(source_artifact, snowflake_cicd_project,
+                                                                            'dev', len(dev_actions) + 1)
+            dev_actions.append(dev_snowflake_deploy_action)
         if context.pipeline.docker_deploy:
-            dev_docker_build_action = self.create_dev_docker_build_action(source_artifact, 3)
+            dev_docker_build_action = self.create_dev_docker_build_action(source_artifact, len(dev_actions) + 1)
             dev_actions.append(dev_docker_build_action)
         pipeline.add_stage(stage_name='Development', actions=dev_actions)
 
@@ -82,8 +93,13 @@ class SalesforcePrototypePipelineStack(Stack):
             test_env, synth_artifact, 2
         )
         test_actions = [test_approval_action, test_create_change_set_action, test_execute_change_set_action]
+        if context.pipeline.snowflake_db_deploy:
+            test_snowflake_deploy_action = self.create_snowflake_cicd_action(source_artifact, snowflake_cicd_project,
+                                                                             'test', len(test_actions) + 1)
+            test_actions.append(test_snowflake_deploy_action)
         if context.pipeline.docker_deploy:
-            test_retag_action = self.create_docker_retag_image_action(source_artifact, test_env.environment_name, 4)
+            test_retag_action = self.create_docker_retag_image_action(source_artifact,
+                                                                      test_env.environment_name, len(test_actions) + 1)
             test_actions.append(test_retag_action)
         pipeline.add_stage(stage_name='Test', actions=test_actions, transition_to_enabled=False)
 
@@ -94,8 +110,13 @@ class SalesforcePrototypePipelineStack(Stack):
             stg_env, synth_artifact, 2
         )
         stg_actions = [stg_approval_action, stg_create_change_set_action, stg_execute_change_set_action]
+        if context.pipeline.snowflake_db_deploy:
+            stg_snowflake_deploy_action = self.create_snowflake_cicd_action(source_artifact, snowflake_cicd_project,
+                                                                            'stg', len(stg_actions) + 1)
+            stg_actions.append(stg_snowflake_deploy_action)
         if context.pipeline.docker_deploy:
-            stg_retag_action = self.create_docker_retag_image_action(source_artifact, stg_env.environment_name, 4)
+            stg_retag_action = self.create_docker_retag_image_action(source_artifact,
+                                                                     stg_env.environment_name, len(stg_actions) + 1)
             stg_actions.append(stg_retag_action)
         pipeline.add_stage(stage_name='Staging', actions=stg_actions, transition_to_enabled=False)
 
@@ -106,8 +127,13 @@ class SalesforcePrototypePipelineStack(Stack):
             prod_env, synth_artifact, 2
         )
         prod_actions = [prod_approval_action, prod_create_change_set_action, prod_execute_change_set_action]
+        if context.pipeline.snowflake_db_deploy:
+            prod_snowflake_deploy_action = self.create_snowflake_cicd_action(source_artifact, snowflake_cicd_project,
+                                                                             'prod', len(prod_actions) + 1)
+            prod_actions.append(prod_snowflake_deploy_action)
         if context.pipeline.docker_deploy:
-            prod_docker_image_copy_action = self.create_prod_docker_image_copy_action(source_artifact, 4)
+            prod_docker_image_copy_action = self.create_prod_docker_image_copy_action(source_artifact,
+                                                                                      len(prod_actions) + 1)
             prod_actions.append(prod_docker_image_copy_action)
         pipeline.add_stage(stage_name='Production', actions=prod_actions, transition_to_enabled=False)
 
@@ -145,13 +171,13 @@ class SalesforcePrototypePipelineStack(Stack):
 
     # -------------------- CREATE SYNTH ACTION TO BUILD CDK PROJECT --------------------
 
-    def create_synth_code_build_project(self):
+    def create_synth_code_build_project(self) -> aws_codebuild.PipelineProject:
         """
         Create a CodeBuild project that will perform a CDK synth.
 
         Returns
         -------
-        aws_codebuild.Project
+        aws_codebuild.PipelineProject
             The CodeBuild project containing the build spec and log group definition.
 
         """
@@ -180,12 +206,12 @@ class SalesforcePrototypePipelineStack(Stack):
                                       log_group_name=f'/pipeline/{project_name.lower()}',
                                       removal_policy=RemovalPolicy.DESTROY,
                                       retention=aws_logs.RetentionDays.TWO_YEARS)
-        synth_project = aws_codebuild.Project(
+        synth_project = aws_codebuild.PipelineProject(
             self, 'Build-Project',
             project_name=project_name,
             build_spec=aws_codebuild.BuildSpec.from_object(synth_build_spec),
             environment=aws_codebuild.BuildEnvironment(
-                build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+                build_image=aws_codebuild.LinuxBuildImage.STANDARD_6_0,
                 privileged=True,
             ),
             logging=aws_codebuild.LoggingOptions(
@@ -198,7 +224,7 @@ class SalesforcePrototypePipelineStack(Stack):
         )
         return synth_project
 
-    def create_synth_action(self, source_artifact: aws_codepipeline.Artifact, synth_project: aws_codebuild.Project):
+    def create_synth_action(self, source_artifact: aws_codepipeline.Artifact, synth_project: aws_codebuild.PipelineProject):
         """
         Create a CodePipeline action that executes a CodeBuild project to perform a CDK synth.
 
@@ -206,7 +232,7 @@ class SalesforcePrototypePipelineStack(Stack):
         ----------
         source_artifact : aws_codepipeline.Artifact
             A CodePipeline artifact containing the source code from GitHub.
-        synth_project : aws_codebuild.Project
+        synth_project : aws_codebuild.PipelineProject
             A CodeBuild project that executes a CDK Synth.
 
         Returns
@@ -379,12 +405,12 @@ class SalesforcePrototypePipelineStack(Stack):
                                       log_group_name=f'/pipeline/{project_name.lower()}',
                                       removal_policy=RemovalPolicy.DESTROY,
                                       retention=aws_logs.RetentionDays.TWO_YEARS)
-        docker_build_project = aws_codebuild.Project(
+        docker_build_project = aws_codebuild.PipelineProject(
             self, f'Build-Docker-Image-{dev_env_name.title()}',
             project_name=project_name,
             build_spec=aws_codebuild.BuildSpec.from_object(docker_build_spec),
             environment=aws_codebuild.BuildEnvironment(
-                build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+                build_image=aws_codebuild.LinuxBuildImage.STANDARD_6_0,
                 privileged=True,
             ),
             logging=aws_codebuild.LoggingOptions(
@@ -534,12 +560,12 @@ class SalesforcePrototypePipelineStack(Stack):
                                       log_group_name=f'/pipeline/{project_name.lower()}',
                                       removal_policy=RemovalPolicy.DESTROY,
                                       retention=aws_logs.RetentionDays.TWO_YEARS)
-        docker_retag_project = aws_codebuild.Project(
+        docker_retag_project = aws_codebuild.PipelineProject(
             self, f'Docker-{env_name_title}-Retag',
             project_name=project_name,
             build_spec=aws_codebuild.BuildSpec.from_object(docker_retag_spec),
             environment=aws_codebuild.BuildEnvironment(
-                build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+                build_image=aws_codebuild.LinuxBuildImage.STANDARD_6_0,
                 privileged=True,
             ),
             logging=aws_codebuild.LoggingOptions(
@@ -667,12 +693,12 @@ class SalesforcePrototypePipelineStack(Stack):
                                       log_group_name=f'/pipeline/{project_name.lower()}',
                                       removal_policy=RemovalPolicy.DESTROY,
                                       retention=aws_logs.RetentionDays.TWO_YEARS)
-        docker_push_project = aws_codebuild.Project(
+        docker_push_project = aws_codebuild.PipelineProject(
             self, f'Docker-Push-{prod_env_name.title()}',
             project_name=project_name,
             build_spec=aws_codebuild.BuildSpec.from_object(docker_push_spec),
             environment=aws_codebuild.BuildEnvironment(
-                build_image=aws_codebuild.LinuxBuildImage.STANDARD_5_0,
+                build_image=aws_codebuild.LinuxBuildImage.STANDARD_6_0,
                 privileged=True,
             ),
             logging=aws_codebuild.LoggingOptions(
@@ -694,3 +720,160 @@ class SalesforcePrototypePipelineStack(Stack):
             run_order=run_order
         )
         return docker_push_action
+
+    # -------------------- SNOWFLAKE CI/CD --------------------
+
+    def create_snowflake_cicd_project(self) -> aws_codebuild.PipelineProject:
+        """
+        Create a CodePipeline CodeBuild project that will run Snowflake CI/CD for multiple environments.
+
+        This includes creating the CodeBuild project and Log Group.
+
+        This also includes creating the necessary IAM policies to allow CodeBuild to read the CICD secret.
+
+        Returns
+        -------
+        aws_codebuild.PipelineProject
+            The CodePipeline pipeline project
+        """
+        # constants
+        dev_account_id = self.context.environments.dev.account_id
+        test_account_id = self.context.environments.test.account_id
+        int_account_id = self.context.environments.int.account_id
+        stg_account_id = self.context.environments.stg.account_id
+        prod_account_id = self.context.environments.prod.account_id
+        dev_vpc_id = self.context.environments.dev.vpc_id
+        dev_subnet_ids = self.context.environments.dev.private_subnet_ids
+
+        # network bits needed so can connect to Snowflake via private link
+        vpc = aws_ec2.Vpc.from_lookup(self, 'vpc', vpc_id=dev_vpc_id)
+        subnets = []
+        for subnet_id in dev_subnet_ids:
+            subnets.append(aws_ec2.Subnet.from_subnet_id(self, subnet_id, subnet_id))
+        security_group = common_funcs.create_security_group(self, 'snowflake-cicd-security-group', vpc)
+
+        # grant access to CICD secrets
+        current_region = Stack.of(self).region
+        add_policy_1 = aws_iam.PolicyStatement(
+            effect=aws_iam.Effect.ALLOW,
+            actions=['secretsmanager:ListSecrets'],
+            resources=['*']
+        )
+        secret_name_cicd = f'cruk-bi-*-snowflake-cicd'
+        secrets_arn_cicd = [  # dev and test envs are in the same AWS account so test is omitted
+            f'arn:aws:secretsmanager:{current_region}:{dev_account_id}:secret:{secret_name_cicd}*',
+            f'arn:aws:secretsmanager:{current_region}:{int_account_id}:secret:{secret_name_cicd}*',
+            f'arn:aws:secretsmanager:{current_region}:{stg_account_id}:secret:{secret_name_cicd}*',
+            f'arn:aws:secretsmanager:{current_region}:{prod_account_id}:secret:{secret_name_cicd}*'
+        ]
+        add_policy_2 = aws_iam.PolicyStatement(
+            effect=aws_iam.Effect.ALLOW,
+            actions=['secretsmanager:GetSecretValue'],
+            resources=secrets_arn_cicd
+        )
+        secret_name_svc_dev = self.context.get_resource_base_name('dev', '').lower()
+        secret_name_svc_test = self.context.get_resource_base_name('test', '').lower()
+        secret_name_svc_int = self.context.get_resource_base_name('int', '').lower()
+        secret_name_svc_stg = self.context.get_resource_base_name('stg', '').lower()
+        secret_name_svc_prod = self.context.get_resource_base_name('prod', '').lower()
+        secrets_arn_svc = [
+            f'arn:aws:secretsmanager:{current_region}:{dev_account_id}:secret:{secret_name_svc_dev}*',
+            f'arn:aws:secretsmanager:{current_region}:{test_account_id}:secret:{secret_name_svc_test}*',
+            f'arn:aws:secretsmanager:{current_region}:{int_account_id}:secret:{secret_name_svc_int}*',
+            f'arn:aws:secretsmanager:{current_region}:{stg_account_id}:secret:{secret_name_svc_stg}*',
+            f'arn:aws:secretsmanager:{current_region}:{prod_account_id}:secret:{secret_name_svc_prod}*'
+        ]
+        add_policy_3 = aws_iam.PolicyStatement(
+            effect=aws_iam.Effect.ALLOW,
+            actions=['secretsmanager:*'],
+            resources=secrets_arn_svc
+        )
+
+        # Commands
+        test_login_cmd = f'--test-secret --aws-secret cruk-bi-$CRUK_ENV_NAME_LOWER_CASE-snowflake-cicd'
+        apply_changes_cmd = rf'--apply-changes --definitions-path-rel "/../../SalesforcePrototype/SalesforcePrototypeDB"' + \
+                            ' --environment $CRUK_ENV_NAME_LOWER_CASE'
+
+        # Codebuild spec
+        snowflake_cicd_build_spec = {
+            'version': '0.2',
+            'phases': {
+                'build': {
+                    'commands': [
+                        'printenv',
+                        'which python',
+                        'cd Shared/SnowflakeBuilder',
+                        'pip3 install --no-cache-dir -r requirements.txt',
+                        'python -m main ' + test_login_cmd,
+                        'python -m main ' + apply_changes_cmd
+                    ]
+                }
+            }
+        }
+
+        # Snowflake CICD Project
+        project_name = self.context.get_resource_base_name('', 'Snowflake-CICD')
+        log_group = aws_logs.LogGroup(self, 'snowflake-cicd-log-group',
+                                      log_group_name=f'/pipeline/{project_name.lower()}',
+                                      removal_policy=RemovalPolicy.DESTROY,
+                                      retention=aws_logs.RetentionDays.TWO_YEARS)
+        snowflake_cicd_project = aws_codebuild.PipelineProject(
+            self, project_name,
+            project_name=project_name,
+            build_spec=aws_codebuild.BuildSpec.from_object(snowflake_cicd_build_spec),
+            environment=aws_codebuild.BuildEnvironment(
+                build_image=aws_codebuild.LinuxBuildImage.STANDARD_6_0
+            ),
+            logging=aws_codebuild.LoggingOptions(
+                cloud_watch=aws_codebuild.CloudWatchLoggingOptions(
+                    enabled=True, log_group=log_group, prefix='pipeline'
+                ),
+            ),
+            queued_timeout=Duration.hours(8),
+            timeout=Duration.hours(1),
+            vpc=vpc,
+            subnet_selection=aws_ec2.SubnetSelection(subnets=subnets),
+            security_groups=[security_group]
+        )
+        snowflake_cicd_project.role.add_to_principal_policy(add_policy_1)
+        snowflake_cicd_project.role.add_to_principal_policy(add_policy_2)
+        snowflake_cicd_project.role.add_to_principal_policy(add_policy_3)
+
+        return snowflake_cicd_project
+
+    def create_snowflake_cicd_action(self, source_artifact: aws_codepipeline.Artifact,
+                                     pipeline_project: aws_codebuild.PipelineProject,
+                                     environment_name: str, run_order: int) -> aws_codepipeline_actions.CodeBuildAction:
+        """
+        Create a CodePipeline CodeBuild action that will run Snowflake CI/CD for a specific environment.
+
+        Parameters
+        ----------
+        source_artifact : aws_codepipeline.Artifact
+            The CodePipeline artifact containing the source code from GitHub.
+        pipeline_project : aws_codebuild.PipelineProject
+            The CodeBuild pipeline project to execute.
+        environment_name : str
+            The name of the environment being deployed to - dev, test, int, stg or prod.
+        run_order : int
+            The position of this action in the CodePipeline stage.
+
+        Returns
+        -------
+        aws_codepipeline_actions.CodeBuildAction
+            The CodePipeline CodeBuild action
+        """
+
+        # Snowflake CICD Action
+        snowflake_cicd_action = aws_codepipeline_actions.CodeBuildAction(
+            action_name='Snowflake-CICD-' + environment_name.title(),
+            input=source_artifact,
+            environment_variables={
+                'CRUK_ENV_NAME_LOWER_CASE': aws_codebuild.BuildEnvironmentVariable(
+                    value=environment_name.lower(), type=aws_codebuild.BuildEnvironmentVariableType.PLAINTEXT
+                )
+            },
+            project=pipeline_project,
+            run_order=run_order
+        )
+        return snowflake_cicd_action
