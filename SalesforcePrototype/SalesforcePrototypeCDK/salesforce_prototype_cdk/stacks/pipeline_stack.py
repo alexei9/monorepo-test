@@ -791,7 +791,7 @@ class SalesforcePrototypePipelineStack(Stack):
 
         # Commands
         test_login_cmd = f'--test-secret --aws-secret cruk-bi-$CRUK_ENV_NAME_LOWER_CASE-snowflake-cicd'
-        apply_changes_cmd = rf'--apply-changes --definitions-path-rel "/../../SalesforcePrototype/SalesforcePrototypeDB"' + \
+        apply_changes_cmd = rf'--apply-changes --definitions-path-rel "/../SalesforcePrototype/SalesforcePrototypeDB"' + \
                             ' --environment $CRUK_ENV_NAME_LOWER_CASE'
 
         # Codebuild spec

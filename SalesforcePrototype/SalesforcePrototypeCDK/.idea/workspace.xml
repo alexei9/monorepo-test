@@ -4,18 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e35d058-6bf2-4b75-8250-99271e26b295" name="Changes" comment="SnowflakeBuilder gubbins (it works locally)">
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/salesforce_prototype_cdk/common/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/salesforce_prototype_cdk/common/common_funcs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/SalesforcePrototypeCDK.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/SalesforcePrototypeCDK.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cdk.json" beforeDir="false" afterPath="$PROJECT_DIR$/cdk.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salesforce_prototype_cdk/stacks/pipeline_stack.py" beforeDir="false" afterPath="$PROJECT_DIR$/salesforce_prototype_cdk/stacks/pipeline_stack.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/salesforce_prototype_cdk/utilities/context_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/salesforce_prototype_cdk/utilities/context_manager.py" afterDir="false" />
+    <list default="true" id="8e35d058-6bf2-4b75-8250-99271e26b295" name="Changes" comment="More amends to setup SnowflakeBuilder">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +126,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665047327633</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="More amends to setup SnowflakeBuilder">
+      <created>1665064652173</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1665064652173</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -160,6 +157,7 @@
     <MESSAGE value="Change scheduled to 45th minute to attempt to fix EventBridge" />
     <MESSAGE value="Deletes unneccesary relic cdk stack file" />
     <MESSAGE value="SnowflakeBuilder gubbins (it works locally)" />
-    <option name="LAST_COMMIT_MESSAGE" value="SnowflakeBuilder gubbins (it works locally)" />
+    <MESSAGE value="More amends to setup SnowflakeBuilder" />
+    <option name="LAST_COMMIT_MESSAGE" value="More amends to setup SnowflakeBuilder" />
   </component>
 </project>
