@@ -21,7 +21,8 @@ BEGIN
           STORAGE_PROVIDER = S3
           ENABLED = TRUE
           STORAGE_AWS_ROLE_ARN = '{AWS_STORAGE_ROLE_ARN}'
-          STORAGE_ALLOWED_LOCATIONS = ('s3://cruk-bi-{env}-{solution-name}/');
+          --STORAGE_ALLOWED_LOCATIONS = ('s3://cruk-bi-{env}-{solution-name}/');
+          STORAGE_ALLOWED_LOCATIONS = ('s3://ageorge-dev-salesforce-prototype/');
 
         GRANT OWNERSHIP ON INTEGRATION {STORAGE_INTEGRATION_NAME} TO ROLE {ENV}SYSADMIN;
     END IF;

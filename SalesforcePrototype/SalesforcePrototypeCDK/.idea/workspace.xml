@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8e35d058-6bf2-4b75-8250-99271e26b295" name="Changes" comment="More amends to setup SnowflakeBuilder">
+    <list default="true" id="8e35d058-6bf2-4b75-8250-99271e26b295" name="Changes" comment="Amending --definitions-path-rel path in pipeline_stack.py">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -133,7 +133,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665064652173</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Amending --definitions-path-rel path in pipeline_stack.py">
+      <created>1665066421885</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1665066421885</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -158,6 +165,7 @@
     <MESSAGE value="Deletes unneccesary relic cdk stack file" />
     <MESSAGE value="SnowflakeBuilder gubbins (it works locally)" />
     <MESSAGE value="More amends to setup SnowflakeBuilder" />
-    <option name="LAST_COMMIT_MESSAGE" value="More amends to setup SnowflakeBuilder" />
+    <MESSAGE value="Amending --definitions-path-rel path in pipeline_stack.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="Amending --definitions-path-rel path in pipeline_stack.py" />
   </component>
 </project>
