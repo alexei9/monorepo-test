@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8e35d058-6bf2-4b75-8250-99271e26b295" name="Changes" comment="pipeline_stack.py change - apply_changes_cmd should instruct to go up two levels. Change made, redeployed.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../SalesforcePrototypeDB/Migrations/007 Table SALESFORCE2_LOAD.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../SalesforcePrototypeDB/Migrations/007 Table SALESFORCE2_LOAD.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
