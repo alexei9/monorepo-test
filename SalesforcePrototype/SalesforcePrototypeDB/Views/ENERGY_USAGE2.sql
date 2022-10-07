@@ -10,7 +10,7 @@ BEGIN
 
     CREATE OR REPLACE VIEW SALESFORCE.ENERGY_USAGE2
     AS
-    SELECT EnergyType, YEAR, PostCode, MeterCount, TotalConsumption, MeanConsumption, MedianConsumption
+    SELECT EnergyType, YEAR, PostCode, MeterCount, TotalConsumption, MeanConsumption
     FROM {IMPLEMENTATION_DB_NAME}.SALESFORCE_LOAD.ENERGY_USAGE2;
 
     GRANT OWNERSHIP ON VIEW SALESFORCE.ENERGY_USAGE2 TO ROLE {ADMIN_ROLE_NAME};
