@@ -16,7 +16,7 @@ BEGIN
 
     CREATE OR REPLACE FILE FORMAT SALESFORCE_LOAD.BASIC_CSV
         TYPE = JSON
-        COMPRESSION = GZIP
+        COMPRESSION = GZIP;
 -- AWS error: Option FIELD_DELIMITER is not valid for file format type JSON.
 -- FIELD_DELIMITER = ','
 --        SKIP_HEADER = 1;
