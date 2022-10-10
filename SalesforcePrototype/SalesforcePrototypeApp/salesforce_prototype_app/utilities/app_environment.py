@@ -1,7 +1,4 @@
-import boto3
-import logging
 import os
-from enum import Enum
 
 
 def is_running_in_container() -> bool:

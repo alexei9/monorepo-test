@@ -1,6 +1,5 @@
 # import pyodbc
 import boto3
-import snowflake.connector
 from salesforce_prototype_app.config.config_values import get_config_value
 import salesforce_prototype_app.utilities.app_environment as app_env
 
