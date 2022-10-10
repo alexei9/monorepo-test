@@ -14,11 +14,12 @@ if __name__ == '__main__':
     print_hi('Alex George - Updation - toucan attempt')
     print(is_running_in_container())
 
-    client = get_boto3()
-    response = client.list_objects_v2(Bucket='ageorge-dev-salesforce-prototype')
-    for content in response.get('Contents', []):
-        print(content['Key'])
+    # client = get_boto3()
+    # response = client.list_objects_v2(Bucket='ageorge-dev-salesforce-prototype')
+    # for content in response.get('Contents', []):
+    #     print(content['Key'])
+    # salesforce_poc()
+    #
 
-    salesforce_poc()
     print(access_secrets())
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
