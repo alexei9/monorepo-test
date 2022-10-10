@@ -81,7 +81,7 @@ def get_user_secret_from_aws(aws_secret_name):
     response = client.get_secret_value(SecretId=existing_secret_arn)
     secret_json = response['SecretString']
     ## user_secret = SnowflakeUserSecret(aws_secret_name=aws_secret_name, secret_json=secret_json)
-    print(len(secret_json))
+    ## print(len(secret_json))
     user_secret = secret_json
     x = len(user_secret)
     y = (user_secret.find(":"))
