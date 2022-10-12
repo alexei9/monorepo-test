@@ -1,15 +1,15 @@
 from salesforce_prototype_app.utilities.get_connections import get_salesforce, get_boto3
-from salesforce_prototype_app.config.config_values import get_config_value
+import salesforce_prototype_app.utilities.app_environment as app_env
 from datetime import datetime
 import gzip
 import json
-import salesforce_prototype_app.utilities.app_environment as app_env
 import os
 
 def salesforce_poc():
 
     sf = get_salesforce()
-    valid_contact_fields_sql = f"SELECT Id, FirstName, LastName FROM Contact WHERE Id = '0032500001eyiEkAAI'"
+    #valid_contact_fields_sql = f"SELECT Id, FirstName, LastName FROM Contact WHERE Id = '0032500001eyiEkAAI'"
+    valid_contact_fields_sql = f"SELECT ID, FIRSTNAME, LASTNAME FROM Contact WHERE Id = '0032500001eyiEkAAI'"
     results = sf.query_all(valid_contact_fields_sql)
     rows = results['records']
     for row in rows:
@@ -24,7 +24,11 @@ def generate_source_data():
     objects = sf.describe()
 
     valid_entities = ["Contact", "Account", "Opportunity"]
+
     valid_contact_fields = ["Id", "AccountId", "Salutation", "FirstName", "LastName"]
+    #valid_contact_fields = ["ID", "ACCOUNTID", "SALUTATION", "FIRSTNAME", "LASTNAME"]
+
+
     number_of_valid_contact_fields = len(valid_contact_fields)
     e= ', '.join(valid_contact_fields)
     valid_contact_fields_sql = f"SELECT {e} FROM Contact"

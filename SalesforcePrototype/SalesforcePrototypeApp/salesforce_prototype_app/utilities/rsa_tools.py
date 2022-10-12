@@ -1,14 +1,8 @@
-import boto3
 import json
 import snowflake.connector
 from salesforce_prototype_app.utilities.get_connections import get_secretsmanager
-
-import uuid
-from cryptography.hazmat.primitives import serialization as crypto_serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.backends import default_backend as crypto_default_backend
 from cryptography.hazmat.primitives import serialization
-from datetime import datetime
+
 
 AWS_REGION_NAME = "eu-west-2"
 AWS_PROFILE_NAME = "crukbidev"
@@ -76,6 +70,7 @@ def get_snowflake_rsa_keys_connection(secret_dict: dict):
         private_key=private_key_bytes,
         role=SNOWFLAKE_USE_ROLE_NAME,
         warehouse=SNOWFLAKE_WAREHOUSE
+        #,        CLIENT_RESULT_COLUMN_CASE_INSENSITIVE = 'TRUE'
     )
     return con
 

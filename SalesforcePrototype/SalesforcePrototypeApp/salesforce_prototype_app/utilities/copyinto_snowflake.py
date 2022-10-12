@@ -1,5 +1,36 @@
-from salesforce_prototype_app.utilities.rsa_tools import get_user_secret_from_aws, get_snowflake_rsa_keys_connection, \
-    get_user_secret_from_aws, get_snowflake_rsa_keys_connection
+from salesforce_prototype_app.utilities.rsa_tools import get_user_secret_from_aws, get_snowflake_rsa_keys_connection
+from salesforce_prototype_app.utilities.get_column_names import get_column_names
+
+
+def insert_contact2(destination_table_name):
+
+    secret_dict = get_user_secret_from_aws()
+    # connect to snowflake as service user and read Snowflake version
+    con = get_snowflake_rsa_keys_connection(secret_dict)
+    cursor = con.cursor()
+
+    column_names = get_column_names(destination_table_name)
+    snowflake_query_select = ''
+    snowflake_query_final_select = ''
+    for x, col_name in enumerate(column_names):
+        sf_datatype = get_snowflake_datatype(destination_table_name, x)
+
+        snowflake_query_select += f'parse_json($1):{col_name}::{sf_datatype} as {col_name}, '
+        snowflake_query_final_select  += f's.{col_name}, '
+
+    snowflake_query_select = snowflake_query_select[:-2]
+
+    snowflake_query = f"COPY INTO DEV_AG_SALESFORCE.SALESFORCE_LOAD.{destination_table_name}" \
+                      f" FROM (" \
+                      f"SELECT " \
+                      f"{snowflake_query_select} " \
+                      f"from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
+                      f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
+
+    cursor.execute(snowflake_query)
+
+#    print(snowflake_query)
+#   print("hello")
 
 # def get_column_names(destination_table_name):
 def insert_contact():
@@ -20,6 +51,16 @@ def insert_contact():
            f"parse_json($1):LastName::VARIANT as LastName from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
            f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
 
+    # sql = f"COPY INTO DEV_AG_SALESFORCE.SALESFORCE_LOAD.SALESFORCE_CONTACT " \
+    #        f"FROM (SELECT parse_json($1):ID::VARIANT as ID, " \
+    #        f"parse_json($1):ACCOUNTID::VARIANT as ACCOUNTID, " \
+    #        f"parse_json($1):SALUTATION::VARIANT as SALUTATION," \
+    #        f"parse_json($1):FIRSTNAME::VARIANT as FIRSTNAME," \
+    #        f"parse_json($1):LASTNAME::VARIANT as LASTNAME from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
+    #        f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
+
+
+
     cursor.execute(sql)
 
 
@@ -36,6 +77,7 @@ def test_snowflake_service_user_authentication():
 
 
 def lookup_snowflake_datatype(datatype: int):
+    # change!! this is almost certainly not the way to do it. discuss with CB.
     snowflake_datatype = {0: 'NUMBER', 1: 'REAL', 2: 'TEXT', 3: 'DATE', 4: 'TIMESTAMP', 5: 'VARIANT',
                           6: 'TIMESTAMP_LTZ', 7: 'TIMESTAMP_TZ', 8: 'TIMESTAMP_NTZ', 9: 'OBJECT', 10: 'ARRAY',
                           11: 'BINARY', 12: 'TIME', 13: 'BOOLEAN'}
@@ -48,7 +90,7 @@ def get_snowflake_datatype(destination_table_name, position_in_iteration):
     # connect to snowflake as service user and read Snowflake version
     con = get_snowflake_rsa_keys_connection(secret_dict)
     csr = con.cursor()
-    metadata = csr.describe(f"SELECT * FROM {destination_table_name}")
+    metadata = csr.describe(f"SELECT * FROM DEV_AG_SALESFORCE.SALESFORCE_LOAD.{destination_table_name}")
     snowflake_column_metadata = metadata[(position_in_iteration)]
     snowflake_column_datatype_code = snowflake_column_metadata[1]
     return lookup_snowflake_datatype(snowflake_column_datatype_code)
