@@ -32,8 +32,8 @@ def get_secretsmanager():
             aws_secret_access_key=get_config_value('AWS_Dev', 'aws_secret_access_key'),
             aws_session_token=get_config_value('AWS_Dev', 'aws_session_token')
         )
-        s3 = session.client('secretsmanager')
-        return s3
+        client = session.client('secretsmanager')
+        return client
 
 
 def get_salesforce():

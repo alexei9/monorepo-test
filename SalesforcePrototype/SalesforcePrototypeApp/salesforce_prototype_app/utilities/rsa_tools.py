@@ -1,6 +1,8 @@
 import boto3
 import json
 import snowflake.connector
+from salesforce_prototype_app.utilities.get_connections import get_secretsmanager
+
 import uuid
 from cryptography.hazmat.primitives import serialization as crypto_serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -43,15 +45,14 @@ def get_user_secret_arn_from_aws(client, aws_secret_name: str) -> str:
 
 
 def get_user_secret_from_aws() -> dict:
-    session = boto3.Session(region_name=AWS_REGION_NAME, profile_name=AWS_PROFILE_NAME)
-    client = session.client('secretsmanager')
+    #session = boto3.Session(region_name=AWS_REGION_NAME, profile_name=AWS_PROFILE_NAME)
+    client = get_secretsmanager()
     existing_secret_arn = get_user_secret_arn_from_aws(client, AWS_SECRET_NAME)
     if existing_secret_arn is None or len(existing_secret_arn) == 0:
         raise ValueError('Unable to find secret with name ' + AWS_SECRET_NAME)
     response = client.get_secret_value(SecretId=existing_secret_arn)
     secret_json = json.loads(response['SecretString'])
     return secret_json
-
 
 def get_private_key_bytes(private_key: str) -> bytes:
     private_key = '-----BEGIN PRIVATE KEY-----\n' + private_key + '\n-----END PRIVATE KEY-----'
