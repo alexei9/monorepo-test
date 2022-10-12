@@ -1,4 +1,27 @@
-from rsa_tools import get_user_secret_from_aws, get_snowflake_rsa_keys_connection
+from salesforce_prototype_app.utilities.rsa_tools import get_user_secret_from_aws, get_snowflake_rsa_keys_connection, \
+    get_user_secret_from_aws, get_snowflake_rsa_keys_connection
+
+# def get_column_names(destination_table_name):
+def insert_contact():
+    secret_dict = get_user_secret_from_aws()
+    # connect to snowflake as service user and read Snowflake version
+    con = get_snowflake_rsa_keys_connection(secret_dict)
+    cursor = con.cursor()
+
+    cursor.execute("SELECT CURRENT_VERSION()")
+    value = cursor.fetchone()[0]
+    print('Snowflake version: ' + value)
+
+    sql = f"COPY INTO DEV_AG_SALESFORCE.SALESFORCE_LOAD.SALESFORCE_CONTACT " \
+           f"FROM (SELECT parse_json($1):Id::VARIANT as Id, " \
+           f"parse_json($1):AccountId::VARIANT as AccountId, " \
+           f"parse_json($1):Salutation::VARIANT as Salutation," \
+           f"parse_json($1):FirstName::VARIANT as FirstName," \
+           f"parse_json($1):LastName::VARIANT as LastName from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
+           f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
+
+    cursor.execute(sql)
+
 
 def test_snowflake_service_user_authentication():
     # get existing user secret

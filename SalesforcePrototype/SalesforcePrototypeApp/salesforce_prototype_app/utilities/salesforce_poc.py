@@ -14,7 +14,6 @@ def salesforce_poc():
     rows = results['records']
     for row in rows:
         del row['attributes']
-
     for row in rows:
         print(row)
 
@@ -54,7 +53,6 @@ def write_target_rows_yield_json_s3(row_generator):
     prefix = 'contact'
     key = f'{prefix}/{filename}'
     s3.upload_file(Filename=filename, Bucket=bucket, Key=key)
-
 
     # remove the file if created locally (if created via AWS it gets removed when the container is destroyed at the end
     # of the ELT so not actions required?

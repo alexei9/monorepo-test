@@ -1,8 +1,6 @@
-# import pyodbc
 import boto3
 from salesforce_prototype_app.config.config_values import get_config_value
 import salesforce_prototype_app.utilities.app_environment as app_env
-# from salesforce_prototype_app.utilities.testing_code import get_user_secret_from_aws
 from simple_salesforce import Salesforce
 
 def get_boto3():
