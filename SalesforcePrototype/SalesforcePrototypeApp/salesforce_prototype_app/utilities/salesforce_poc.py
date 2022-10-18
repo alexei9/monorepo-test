@@ -1,5 +1,6 @@
 from salesforce_prototype_app.utilities.get_connections import get_salesforce, get_boto3
 import salesforce_prototype_app.utilities.app_environment as app_env
+from salesforce_prototype_app.utilities.get_fieldnames import dict_of_lists
 from datetime import datetime
 import gzip
 import json
@@ -17,20 +18,17 @@ def salesforce_poc():
         print(row)
 
 
-def generate_source_data():
+def pull_salesforce_entity(salesforce_entity_name):
 
     sf = get_salesforce()
     objects = sf.describe()
 
-    valid_entities = ["Contact", "Account", "Opportunity"]
-
     valid_contact_fields = ["Id", "AccountId", "Salutation", "FirstName", "LastName"]
-
-
-    number_of_valid_contact_fields = len(valid_contact_fields)
+    valid_contact_fields = dict_of_lists(salesforce_entity_name)
 
     e= ', '.join(valid_contact_fields)
-    valid_contact_fields_sql = f"SELECT {e} FROM Contact"
+    # valid_contact_fields_sql = f"SELECT {e} FROM Contact"
+    valid_contact_fields_sql = f"SELECT {e} FROM {salesforce_entity_name}"
 
     results = sf.query_all(valid_contact_fields_sql)
 
@@ -42,10 +40,11 @@ def generate_source_data():
         yield row
 
 
-def write_target_rows_yield_json_s3(row_generator):
+def write_target_rows_yield_json_s3(row_generator, salesforce_entity_name):
     dt = datetime.now()
     formatted_date = datetime.strftime(dt, '%Y%m%d%H%M%S')
-    filename = f'Contact_{formatted_date}.json.gz'
+    #filename = f'Contact_{formatted_date}.json.gz'
+    filename = f'{salesforce_entity_name}_{formatted_date}.json.gz'
 
 
     with gzip.open(filename, mode='wt', encoding='UTF8', newline='') as f:
@@ -55,7 +54,7 @@ def write_target_rows_yield_json_s3(row_generator):
 
     s3 = get_boto3()
     bucket = 'ageorge-dev-salesforce-prototype'
-    prefix = 'contact'
+    prefix = f'{salesforce_entity_name}'
     key = f'{prefix}/{filename}'
     s3.upload_file(Filename=filename, Bucket=bucket, Key=key)
 

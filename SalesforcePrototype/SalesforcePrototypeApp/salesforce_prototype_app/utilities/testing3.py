@@ -1,4 +1,4 @@
-from salesforce_prototype_app.utilities.testiing2 import listtests
+from salesforce_prototype_app.utilities.get_fieldnames import listtests
 
 
 result = listtests()

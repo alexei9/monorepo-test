@@ -1,9 +1,8 @@
-from salesforce_prototype_app.utilities.get_connections import get_boto3,  get_user_secret_arn_from_aws, get_user_secret_from_aws
+from salesforce_prototype_app.utilities.get_connections import  get_user_secret_arn_from_aws, get_user_secret_from_aws
 from salesforce_prototype_app.utilities.app_environment import is_running_in_container
-from salesforce_prototype_app.utilities.salesforce_poc import salesforce_poc, generate_source_data, write_target_rows_yield_json_s3
-# from salesforce_prototype_app.utilities.acccess_secrets import access_secrets
-# from salesforce_prototype_app.utilities.testing_code import get_user_secret_arn_from_aws, get_user_secret_from_aws
-from salesforce_prototype_app.utilities.copyinto_snowflake import insert_contact, insert_contact2
+from salesforce_prototype_app.utilities.salesforce_poc import salesforce_poc, pull_salesforce_entity, write_target_rows_yield_json_s3
+from salesforce_prototype_app.utilities.copyinto_snowflake import insert_contact
+from salesforce_prototype_app.utilities.snowflake_config import get_valid_salesforce_entities
 
 
 if __name__ == '__main__':
@@ -18,11 +17,13 @@ if __name__ == '__main__':
     # salesforce_poc tests a connection to salesforce by querying 1 row
     salesforce_poc()
 
-    # connect to salesforce
-    row_generator = generate_source_data()
 
-    # write to s3
-    write_target_rows_yield_json_s3(row_generator)
+    for salesforce_entity_name in get_valid_salesforce_entities():
+        # connect to salesforce
+        row_generator = pull_salesforce_entity(salesforce_entity_name)
+
+        # write to s3
+        write_target_rows_yield_json_s3(row_generator, salesforce_entity_name)
 
     # insert Contact s3 file from AWS into Snowflake
 
