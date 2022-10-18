@@ -8,7 +8,6 @@ import os
 def salesforce_poc():
 
     sf = get_salesforce()
-    #valid_contact_fields_sql = f"SELECT Id, FirstName, LastName FROM Contact WHERE Id = '0032500001eyiEkAAI'"
     valid_contact_fields_sql = f"SELECT ID, FIRSTNAME, LASTNAME FROM Contact WHERE Id = '0032500001eyiEkAAI'"
     results = sf.query_all(valid_contact_fields_sql)
     rows = results['records']
@@ -26,13 +25,15 @@ def generate_source_data():
     valid_entities = ["Contact", "Account", "Opportunity"]
 
     valid_contact_fields = ["Id", "AccountId", "Salutation", "FirstName", "LastName"]
-    #valid_contact_fields = ["ID", "ACCOUNTID", "SALUTATION", "FIRSTNAME", "LASTNAME"]
 
 
     number_of_valid_contact_fields = len(valid_contact_fields)
+
     e= ', '.join(valid_contact_fields)
     valid_contact_fields_sql = f"SELECT {e} FROM Contact"
+
     results = sf.query_all(valid_contact_fields_sql)
+
 
     rows = results['records']
     for row in rows:

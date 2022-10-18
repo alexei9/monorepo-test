@@ -1,5 +1,4 @@
 from salesforce_prototype_app.utilities.rsa_tools import get_user_secret_from_aws, get_snowflake_rsa_keys_connection
-from salesforce_prototype_app.utilities.get_column_names import get_column_names
 
 
 def insert_contact2(destination_table_name):
@@ -44,21 +43,12 @@ def insert_contact():
     print('Snowflake version: ' + value)
 
     sql = f"COPY INTO DEV_AG_SALESFORCE.SALESFORCE_LOAD.SALESFORCE_CONTACT " \
-           f"FROM (SELECT parse_json($1):Id::VARIANT as Id, " \
-           f"parse_json($1):AccountId::VARIANT as AccountId, " \
-           f"parse_json($1):Salutation::VARIANT as Salutation," \
-           f"parse_json($1):FirstName::VARIANT as FirstName," \
-           f"parse_json($1):LastName::VARIANT as LastName from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
-           f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
-
-    # sql = f"COPY INTO DEV_AG_SALESFORCE.SALESFORCE_LOAD.SALESFORCE_CONTACT " \
-    #        f"FROM (SELECT parse_json($1):ID::VARIANT as ID, " \
-    #        f"parse_json($1):ACCOUNTID::VARIANT as ACCOUNTID, " \
-    #        f"parse_json($1):SALUTATION::VARIANT as SALUTATION," \
-    #        f"parse_json($1):FIRSTNAME::VARIANT as FIRSTNAME," \
-    #        f"parse_json($1):LASTNAME::VARIANT as LASTNAME from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
-    #        f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
-
+          f"FROM (SELECT parse_json($1):Id::VARIANT as ID, " \
+          f"parse_json($1):AccountId::VARIANT as ACCOUNTID, " \
+          f"parse_json($1):Salutation::VARIANT as SALUTATION," \
+          f"parse_json($1):FirstName::VARIANT as FIRSTNAME," \
+          f"parse_json($1):LastName::VARIANT as LASTNAME from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
+          f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
 
 
     cursor.execute(sql)
