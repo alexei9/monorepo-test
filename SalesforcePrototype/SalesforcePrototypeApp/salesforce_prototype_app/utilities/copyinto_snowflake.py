@@ -9,9 +9,10 @@ def copyinto_snowflake(salesforce_entity_name):
     con = get_snowflake_rsa_keys_connection(secret_dict)
     cursor = con.cursor()
 
-    cursor.execute("SELECT CURRENT_VERSION()")
-    value = cursor.fetchone()[0]
-    print('Snowflake version: ' + value)
+    print(f'Copying {salesforce_entity_name} into Snowflake')
+    # cursor.execute("SELECT CURRENT_VERSION()")
+    # value = cursor.fetchone()[0]
+    # print('Snowflake version: ' + value)
 
 
     column_names = dict_of_lists(salesforce_entity_name)
@@ -32,11 +33,19 @@ def copyinto_snowflake(salesforce_entity_name):
                       f"SELECT " \
                       f"{snowflake_query_select} " \
                       f"from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
-                      f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
+                      f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV')" \
+                      f" PATTERN = '.*{salesforce_entity_name}.*';"
+
+                        #TODO this pattern needs updating because at the moment the matching would cause issues
+                        #TODO for example 'Contact' and 'ContactAccount' get picked up by 'Contact' with wildcards
+
+                      #f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV')" \
+                      #f" PATTERN = '{salesforce_entity_name}';"
 
 
     cursor.execute(sql)
 
+    print(f'{salesforce_entity_name} has been copied into Snowflake')
 
 def test_snowflake_service_user_authentication():
     # get existing user secret

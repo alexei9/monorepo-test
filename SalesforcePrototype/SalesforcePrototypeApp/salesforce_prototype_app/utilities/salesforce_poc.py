@@ -39,6 +39,7 @@ def pull_salesforce_entity(salesforce_entity_name):
     for row in rows:
         yield row
 
+    print(f"Yield for {salesforce_entity_name} has begun")
 
 def write_target_rows_yield_json_s3(row_generator, salesforce_entity_name):
     dt = datetime.now()
@@ -58,6 +59,7 @@ def write_target_rows_yield_json_s3(row_generator, salesforce_entity_name):
     key = f'{prefix}/{filename}'
     s3.upload_file(Filename=filename, Bucket=bucket, Key=key)
 
+    print(f'{filename} uploaded')
     # remove the file if created locally (if created via AWS it gets removed when the container is destroyed at the end
     # of the ELT so not actions required?
     if app_env.is_running_in_aws():

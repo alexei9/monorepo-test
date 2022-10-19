@@ -14,6 +14,8 @@ def get_valid_salesforce_entities():
 
     con.close()
    # print(column_names)
-    return valid_entities[0]
+    # print(valid_entities[0])
+    # return valid_entities[0]
+    return valid_entities
 
 
