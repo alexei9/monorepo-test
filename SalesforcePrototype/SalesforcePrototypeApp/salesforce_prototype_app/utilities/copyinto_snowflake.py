@@ -1,39 +1,9 @@
 from salesforce_prototype_app.utilities.rsa_tools import get_user_secret_from_aws, get_snowflake_rsa_keys_connection
 from salesforce_prototype_app.utilities.get_fieldnames import dict_of_lists
 
-def insert_contact2(destination_table_name):
-
-    secret_dict = get_user_secret_from_aws()
-    # connect to snowflake as service user and read Snowflake version
-    con = get_snowflake_rsa_keys_connection(secret_dict)
-    cursor = con.cursor()
-
-    column_names = get_column_names(destination_table_name)
-    snowflake_query_select = ''
-    snowflake_query_final_select = ''
-    for x, col_name in enumerate(column_names):
-        sf_datatype = get_snowflake_datatype(destination_table_name, x)
-
-        snowflake_query_select += f'parse_json($1):{col_name}::{sf_datatype} as {col_name}, '
-        snowflake_query_final_select  += f's.{col_name}, '
-
-    snowflake_query_select = snowflake_query_select[:-2]
-
-    snowflake_query = f"COPY INTO DEV_AG_SALESFORCE.SALESFORCE_LOAD.{destination_table_name}" \
-                      f" FROM (" \
-                      f"SELECT " \
-                      f"{snowflake_query_select} " \
-                      f"from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
-                      f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
-
-    cursor.execute(snowflake_query)
 
 
-
-
-
-
-def insert_contact(salesforce_entity_name):
+def copyinto_snowflake(salesforce_entity_name):
     secret_dict = get_user_secret_from_aws()
     # connect to snowflake as service user and read Snowflake version
     con = get_snowflake_rsa_keys_connection(secret_dict)
@@ -44,7 +14,6 @@ def insert_contact(salesforce_entity_name):
     print('Snowflake version: ' + value)
 
 
-    ### testing new bit here
     column_names = dict_of_lists(salesforce_entity_name)
     snowflake_query_select = ''
     snowflake_query_final_select = ''
@@ -65,18 +34,6 @@ def insert_contact(salesforce_entity_name):
                       f"from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
                       f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
 
-    ### testing new bit here
-
-
-    ### commenting old (it works!) bit here
-    # sql = f"COPY INTO DEV_AG_SALESFORCE.SALESFORCE_LOAD.SALESFORCE_CONTACT " \
-    #       f"FROM (SELECT parse_json($1):Id::VARIANT as ID, " \
-    #       f"parse_json($1):AccountId::VARIANT as ACCOUNTID, " \
-    #       f"parse_json($1):Salutation::VARIANT as SALUTATION," \
-    #       f"parse_json($1):FirstName::VARIANT as FIRSTNAME," \
-    #       f"parse_json($1):LastName::VARIANT as LASTNAME from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
-    #       f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
-    ### commenting old (it works!) bit here
 
     cursor.execute(sql)
 
@@ -112,33 +69,3 @@ def get_snowflake_datatype(destination_table_name, position_in_iteration):
     snowflake_column_datatype_code = snowflake_column_metadata[1]
     return lookup_snowflake_datatype(snowflake_column_datatype_code)
 
-
-def copyinto_snowflake(destination_table_name, stage_name):
-
-    secret_dict = get_user_secret_from_aws()
-    # connect to snowflake as service user and read Snowflake version
-    con = get_snowflake_rsa_keys_connection(secret_dict)
-    csr = con.cursor()
-
-    column_names = get_column_names(destination_table_name)
-    snowflake_query_select = ''
-    snowflake_query_final_select = ''
-    #x = 0
-    #for col_name in column_names:
-    for x, col_name in enumerate(column_names):
-        sf_datatype = get_snowflake_datatype(destination_table_name, x)
-
-        snowflake_query_select += f'parse_json($1):{col_name}::{sf_datatype} as {col_name}, '
-        snowflake_query_final_select  += f's.{col_name}, '
-        #x +=1
-
-    snowflake_query_select = snowflake_query_select[:-2]
-    snowflake_query = f"COPY INTO {destination_table_name}" \
-                      f" FROM (" \
-                      f"SELECT " \
-                      f"{snowflake_query_select} " \
-                      f"from @{stage_name})"\
-
-
-    csr.execute(snowflake_query)
-    con.close()
