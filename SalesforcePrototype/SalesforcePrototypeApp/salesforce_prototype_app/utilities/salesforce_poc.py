@@ -23,7 +23,7 @@ def pull_salesforce_entity(salesforce_entity_name):
     sf = get_salesforce()
     objects = sf.describe()
 
-    valid_contact_fields = ["Id", "AccountId", "Salutation", "FirstName", "LastName"]
+ #   valid_contact_fields = ["Id", "AccountId", "Salutation", "FirstName", "LastName"]
     valid_contact_fields = dict_of_lists(salesforce_entity_name)
 
     e= ', '.join(valid_contact_fields)

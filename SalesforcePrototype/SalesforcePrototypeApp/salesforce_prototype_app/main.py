@@ -26,7 +26,8 @@ if __name__ == '__main__':
         write_target_rows_yield_json_s3(row_generator, salesforce_entity_name)
 
     # insert Contact s3 file from AWS into Snowflake
-
-    insert_contact()
-
-    #insert_contact2("SALESFORCE_CONTACT")
+    # question for later - which is more efficient - should this be one loop or two (two at present)?
+        # Option 1. Pull Entity, Write Entity to S3, Write S3 file to Snowflake
+        # Option 2. Pull Entity, Write Entity to S3, Pull next Entity, Write Next Entity to S3 (then loop to Snowflake)
+    for salesforce_entity_name in get_valid_salesforce_entities():
+        insert_contact(salesforce_entity_name)

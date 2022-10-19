@@ -1,5 +1,5 @@
 from salesforce_prototype_app.utilities.rsa_tools import get_user_secret_from_aws, get_snowflake_rsa_keys_connection
-
+from salesforce_prototype_app.utilities.get_fieldnames import dict_of_lists
 
 def insert_contact2(destination_table_name):
 
@@ -28,11 +28,12 @@ def insert_contact2(destination_table_name):
 
     cursor.execute(snowflake_query)
 
-#    print(snowflake_query)
-#   print("hello")
 
-# def get_column_names(destination_table_name):
-def insert_contact():
+
+
+
+
+def insert_contact(salesforce_entity_name):
     secret_dict = get_user_secret_from_aws()
     # connect to snowflake as service user and read Snowflake version
     con = get_snowflake_rsa_keys_connection(secret_dict)
@@ -42,14 +43,40 @@ def insert_contact():
     value = cursor.fetchone()[0]
     print('Snowflake version: ' + value)
 
-    sql = f"COPY INTO DEV_AG_SALESFORCE.SALESFORCE_LOAD.SALESFORCE_CONTACT " \
-          f"FROM (SELECT parse_json($1):Id::VARIANT as ID, " \
-          f"parse_json($1):AccountId::VARIANT as ACCOUNTID, " \
-          f"parse_json($1):Salutation::VARIANT as SALUTATION," \
-          f"parse_json($1):FirstName::VARIANT as FIRSTNAME," \
-          f"parse_json($1):LastName::VARIANT as LASTNAME from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
-          f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
 
+    ### testing new bit here
+    column_names = dict_of_lists(salesforce_entity_name)
+    snowflake_query_select = ''
+    snowflake_query_final_select = ''
+    for x, col_name in enumerate(column_names):
+        #sf_datatype = get_snowflake_datatype(destination_table_name, x)
+
+        # below - replace "VARIANT" with something dynamic for datatype.
+        # perhaps this could come from the Source? check with CB
+        snowflake_query_select += f'parse_json($1):{col_name}::VARIANT as {col_name}, '
+        snowflake_query_final_select  += f's.{col_name}, '
+
+    snowflake_query_select = snowflake_query_select[:-2]
+
+    sql = f"COPY INTO DEV_AG_SALESFORCE.SALESFORCE_LOAD.SALESFORCE_{salesforce_entity_name}" \
+                      f" FROM (" \
+                      f"SELECT " \
+                      f"{snowflake_query_select} " \
+                      f"from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
+                      f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
+
+    ### testing new bit here
+
+
+    ### commenting old (it works!) bit here
+    # sql = f"COPY INTO DEV_AG_SALESFORCE.SALESFORCE_LOAD.SALESFORCE_CONTACT " \
+    #       f"FROM (SELECT parse_json($1):Id::VARIANT as ID, " \
+    #       f"parse_json($1):AccountId::VARIANT as ACCOUNTID, " \
+    #       f"parse_json($1):Salutation::VARIANT as SALUTATION," \
+    #       f"parse_json($1):FirstName::VARIANT as FIRSTNAME," \
+    #       f"parse_json($1):LastName::VARIANT as LASTNAME from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
+    #       f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV');"
+    ### commenting old (it works!) bit here
 
     cursor.execute(sql)
 

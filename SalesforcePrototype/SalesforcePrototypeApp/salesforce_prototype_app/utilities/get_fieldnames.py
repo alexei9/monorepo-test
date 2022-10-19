@@ -1,5 +1,4 @@
-
-
+from salesforce_prototype_app.utilities.snowflake_config import get_valid_salesforce_entities
 
 def dict_of_lists(salesforce_entity):
 
@@ -17,23 +16,11 @@ def dict_of_lists(salesforce_entity):
         "City": ["CityId", "CityName", "Population"]
     }
 
-    #print(dict_of_lists[salesforce_entity])
     return dict_of_lists[salesforce_entity]
 
 
-# dict_of_lists("Contact")
-# everything = listtests()
-# for x in everything.keys():
-#     print(x)
 
-
-
-
-
-from salesforce_prototype_app.utilities.snowflake_config import get_valid_salesforce_entities
-
-
-for x in get_valid_salesforce_entities():
-    print(x[0])
-
-
+#
+#
+# for x in get_valid_salesforce_entities():
+#     print(x[0])
