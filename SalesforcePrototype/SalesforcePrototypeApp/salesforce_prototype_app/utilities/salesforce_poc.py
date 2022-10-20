@@ -66,3 +66,5 @@ def write_target_rows_yield_json_s3(row_generator, salesforce_entity_name):
         pass
     else:
         os.remove(filename)
+
+    return filename

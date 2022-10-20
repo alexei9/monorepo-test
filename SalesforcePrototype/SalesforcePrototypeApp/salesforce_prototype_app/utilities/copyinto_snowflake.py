@@ -3,7 +3,7 @@ from salesforce_prototype_app.utilities.get_fieldnames import dict_of_lists
 
 
 
-def copyinto_snowflake(salesforce_entity_name):
+def copyinto_snowflake(salesforce_entity_name, filename):
     secret_dict = get_user_secret_from_aws()
     # connect to snowflake as service user and read Snowflake version
     con = get_snowflake_rsa_keys_connection(secret_dict)
@@ -34,7 +34,8 @@ def copyinto_snowflake(salesforce_entity_name):
                       f"{snowflake_query_select} " \
                       f"from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
                       f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV')" \
-                      f" PATTERN = '.*{salesforce_entity_name}.*';"
+                      f" PATTERN = '.*{filename}.*';"
+
 
                         #TODO this pattern needs updating because at the moment the matching would cause issues
                         #TODO for example 'Contact' and 'ContactAccount' get picked up by 'Contact' with wildcards
@@ -42,10 +43,25 @@ def copyinto_snowflake(salesforce_entity_name):
                       #f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV')" \
                       #f" PATTERN = '{salesforce_entity_name}';"
 
+                      #below is last working one
+                      #f" PATTERN = '.*{salesforce_entity_name}.*';"
+
 
     cursor.execute(sql)
 
     print(f'{salesforce_entity_name} has been copied into Snowflake')
+
+
+def truncate_snowflaketable(salesforce_entity_name):
+    secret_dict = get_user_secret_from_aws()
+    # connect to snowflake as service user and read Snowflake version
+    con = get_snowflake_rsa_keys_connection(secret_dict)
+    cursor = con.cursor()
+
+    print(f'Preparing to truncate DEV_AG_SALESFORCE.SALESFORCE_LOAD.SALESFORCE_{salesforce_entity_name}')
+    sql = f"TRUNCATE DEV_AG_SALESFORCE.SALESFORCE_LOAD.SALESFORCE_{salesforce_entity_name};"
+    cursor.execute(sql)
+    print(f'DEV_AG_SALESFORCE.SALESFORCE_LOAD.SALESFORCE_{salesforce_entity_name} has been truncated')
 
 def test_snowflake_service_user_authentication():
     # get existing user secret
