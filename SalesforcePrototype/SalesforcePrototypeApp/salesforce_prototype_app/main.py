@@ -7,15 +7,9 @@ from salesforce_prototype_app.utilities.snowflake_config import get_valid_salesf
 
 if __name__ == '__main__':
     print('Starting Salesforce ELT process...')
-
-    print(is_running_in_container())
-
-    print(get_user_secret_arn_from_aws("ageorge-dev-salesforce-prototype"))
-
-    print(get_user_secret_from_aws("ageorge-dev-salesforce-prototype"))
-
-    # salesforce_poc tests a connection to salesforce by querying 1 row
- #   salesforce_poc()
+    print(f" It is {is_running_in_container()} that the code is running in a container")
+    # print(get_user_secret_arn_from_aws("ageorge-dev-salesforce-prototype"))
+    # print(get_user_secret_from_aws("ageorge-dev-salesforce-prototype"))
 
     valid_salesforce_entities = get_valid_salesforce_entities()
     for sf_entity_name in valid_salesforce_entities:
@@ -41,8 +35,3 @@ if __name__ == '__main__':
 
 
     # new code in here to move data from loading into proper schema
-
-
-
-
-
