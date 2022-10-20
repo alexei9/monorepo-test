@@ -1,4 +1,3 @@
-from salesforce_prototype_app.utilities.snowflake_config import get_valid_salesforce_entities
 
 def dict_of_lists(salesforce_entity):
 
@@ -20,9 +19,3 @@ def dict_of_lists(salesforce_entity):
 
     return dict_of_lists[salesforce_entity]
 
-
-
-#
-#
-# for x in get_valid_salesforce_entities():
-#     print(x[0])
