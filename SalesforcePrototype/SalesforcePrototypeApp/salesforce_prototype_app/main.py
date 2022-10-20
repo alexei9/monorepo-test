@@ -3,11 +3,12 @@ from salesforce_prototype_app.utilities.app_environment import is_running_in_con
 from salesforce_prototype_app.utilities.salesforce_poc import salesforce_poc, pull_salesforce_entity, write_target_rows_yield_json_s3
 from salesforce_prototype_app.utilities.copyinto_snowflake import copyinto_snowflake, truncate_snowflaketable
 from salesforce_prototype_app.utilities.snowflake_config import get_valid_salesforce_entities
+from salesforce_prototype_app.utilities.snowflake_merge import mergeinto_snowflake
 
 
 if __name__ == '__main__':
     print('Starting Salesforce ELT process...')
-    print(f" It is {is_running_in_container()} that the code is running in a container")
+    print(f"It is {is_running_in_container()} that the code is running in a container")
     # print(get_user_secret_arn_from_aws("ageorge-dev-salesforce-prototype"))
     # print(get_user_secret_from_aws("ageorge-dev-salesforce-prototype"))
 
@@ -32,6 +33,5 @@ if __name__ == '__main__':
     # Option 1. Pull Entity, Write Entity to S3, Write S3 file to Snowflake
     # Option 2. Pull Entity, Write Entity to S3, Pull next Entity, Write Next Entity to S3 (then loop to Snowflake)
 
-
-
     # new code in here to move data from loading into proper schema
+        mergeinto_snowflake(salesforce_entity_name)

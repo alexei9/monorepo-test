@@ -37,16 +37,6 @@ def copyinto_snowflake(salesforce_entity_name, filename):
                       f" PATTERN = '.*{filename}.*';"
 
 
-                        #TODO this pattern needs updating because at the moment the matching would cause issues
-                        #TODO for example 'Contact' and 'ContactAccount' get picked up by 'Contact' with wildcards
-
-                      #f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV')" \
-                      #f" PATTERN = '{salesforce_entity_name}';"
-
-                      #below is last working one
-                      #f" PATTERN = '.*{salesforce_entity_name}.*';"
-
-
     cursor.execute(sql)
 
     print(f'{salesforce_entity_name} has been copied into Snowflake')
