@@ -33,8 +33,10 @@ def copyinto_snowflake(salesforce_entity_name, filename):
                       f"SELECT " \
                       f"{snowflake_query_select} " \
                       f"from @DEV_AG_SALESFORCE.SALESFORCE_LOAD.S3_STAGE)" \
-                      f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV')" \
+                      f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_JSON')" \
                       f" PATTERN = '.*{filename}.*';"
+
+    #f" FILE_FORMAT = (FORMAT_NAME = 'DEV_AG_SALESFORCE.SALESFORCE_LOAD.BASIC_CSV')" \
 
 
     cursor.execute(sql)
