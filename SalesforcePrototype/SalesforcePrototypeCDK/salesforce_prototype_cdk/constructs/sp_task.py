@@ -375,7 +375,8 @@ class SalesforcePrototypeTaskConstruct(Construct):
         scheduled_task_definition_options = aws_ecs_patterns.ScheduledFargateTaskDefinitionOptions(
             task_definition=fargate_task_definition
         )
-        schedule = aws_applicationautoscaling.Schedule.cron(minute='45')
+        #schedule = aws_applicationautoscaling.Schedule.cron(minute='45')
+        schedule = aws_applicationautoscaling.Schedule.cron(hour='3')
         scheduled_task = aws_ecs_patterns.ScheduledFargateTask(
             self, id='scheduled-task',
             scheduled_fargate_task_definition_options=scheduled_task_definition_options,
