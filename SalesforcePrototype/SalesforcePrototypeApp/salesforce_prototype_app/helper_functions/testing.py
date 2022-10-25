@@ -1,9 +1,15 @@
 
-from salesforce_prototype_app.utilities.get_connections import get_salesforce
 
-sf = get_salesforce()
-description = sf.Account.describe()
-print(description)
+from salesforce_prototype_app.utilities.get_connections import get_awsclient
+get_awsclient("secretsmanager")
+get_awsclient("s3")
+
+#
+# from salesforce_prototype_app.utilities.get_connections import get_salesforce
+#
+# sf = get_salesforce()
+# description = sf.Account.describe()
+# print(description)
 
 
 

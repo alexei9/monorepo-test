@@ -1,6 +1,6 @@
 import json
 import snowflake.connector
-from salesforce_prototype_app.utilities.get_connections import get_secretsmanager
+from salesforce_prototype_app.utilities.get_connections import get_aws_client
 from cryptography.hazmat.primitives import serialization
 
 
@@ -39,8 +39,7 @@ def get_user_secret_arn_from_aws(client, aws_secret_name: str) -> str:
 
 
 def get_user_secret_from_aws() -> dict:
-    #session = boto3.Session(region_name=AWS_REGION_NAME, profile_name=AWS_PROFILE_NAME)
-    client = get_secretsmanager()
+    client = get_aws_client('secretsmanager')
     existing_secret_arn = get_user_secret_arn_from_aws(client, AWS_SECRET_NAME)
     if existing_secret_arn is None or len(existing_secret_arn) == 0:
         raise ValueError('Unable to find secret with name ' + AWS_SECRET_NAME)

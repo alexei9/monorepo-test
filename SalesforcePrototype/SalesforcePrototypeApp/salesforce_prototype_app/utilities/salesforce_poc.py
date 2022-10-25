@@ -1,4 +1,4 @@
-from salesforce_prototype_app.utilities.get_connections import get_salesforce, get_s3
+from salesforce_prototype_app.utilities.get_connections import get_salesforce, get_aws_client
 import salesforce_prototype_app.utilities.app_environment as app_env
 from salesforce_prototype_app.utilities.get_fieldnames import dict_of_lists
 from datetime import datetime
@@ -53,7 +53,7 @@ def write_target_rows_yield_json_s3(row_generator, salesforce_entity_name):
             json.dump(json.dumps(row_values, default=str), f)
             f.write("\n")
 
-    s3 = get_s3()
+    s3 = get_aws_client('s3')
     bucket = 'ageorge-dev-salesforce-prototype'
     prefix = f'{salesforce_entity_name}'
     key = f'{prefix}/{filename}'

@@ -13,7 +13,6 @@ def dict_of_lists(salesforce_entity):
         "Contact": ["Id", "AccountId", "Salutation", "FirstName", "LastName"],
         "Person": ["PersonId", "HairColor", "Address", "CatName", "StarSign"],
         "City": ["CityId", "CityName", "Population"],
-        #"Account" : ["AccountNumber", "Name", "Industry", "NumberOfEmployees", "CreatedDate"]
         "Account": ["Id", "Name", "Industry", "NumberOfEmployees"]
     }
 
