@@ -6,32 +6,33 @@ from simple_salesforce import Salesforce
 def get_boto3():
     if app_env.is_running_in_aws():
         session = boto3.Session()
-        s3 = session.client('s3')
-        return s3
+        return session
 
     else:
-        session = boto3.Session(
-            aws_access_key_id=get_config_value('AWS_Dev', 'aws_access_key_id'),
-            aws_secret_access_key=get_config_value('AWS_Dev', 'aws_secret_access_key'),
-            aws_session_token=get_config_value('AWS_Dev', 'aws_session_token')
-        )
-        s3 = session.client('s3')
-        return s3
+        aws_profile_name = app_env.get_env_var_value(app_env.EnvironmentVariableNames.AWS_PROFILE_NAME)
+        aws_region_name = app_env.get_env_var_value(app_env.EnvironmentVariableNames.AWS_REGION_NAME)
+        session = boto3.Session(profile_name=aws_profile_name, region_name=aws_region_name)
+        return session
+
+        # session = boto3.Session(
+        #     aws_access_key_id=get_config_value('AWS_Dev', 'aws_access_key_id'),
+        #     aws_secret_access_key=get_config_value('AWS_Dev', 'aws_secret_access_key'),
+        #     aws_session_token=get_config_value('AWS_Dev', 'aws_session_token')
+        # )
+        # return session
+
+
+def get_s3():
+    session = get_boto3()
+    s3 = session.client('s3')
+    return s3
+
 
 def get_secretsmanager():
-    if app_env.is_running_in_aws():
-        session = boto3.Session()
-        client = session.client('secretsmanager')
-        return client
+    session = get_boto3()
+    secretsmanager = session.client('secretsmanager')
+    return secretsmanager
 
-    else:
-        session = boto3.Session(
-            aws_access_key_id=get_config_value('AWS_Dev', 'aws_access_key_id'),
-            aws_secret_access_key=get_config_value('AWS_Dev', 'aws_secret_access_key'),
-            aws_session_token=get_config_value('AWS_Dev', 'aws_session_token')
-        )
-        client = session.client('secretsmanager')
-        return client
 
 
 def get_salesforce():
@@ -85,6 +86,5 @@ def get_user_secret_from_aws(aws_secret_name):
     y = (user_secret.find(":"))
     z = user_secret[y + 2:-2]
     return z
-
 
 

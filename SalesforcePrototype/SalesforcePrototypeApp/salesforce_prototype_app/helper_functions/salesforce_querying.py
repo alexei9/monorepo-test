@@ -1,4 +1,4 @@
-from salesforce_prototype_app.utilities.get_connections import get_salesforce, get_boto3
+from salesforce_prototype_app.utilities.get_connections import get_salesforce
 from simple_salesforce import SFType
 from tabulate import tabulate
 import salesforce_prototype_app.utilities.app_environment as app_env
