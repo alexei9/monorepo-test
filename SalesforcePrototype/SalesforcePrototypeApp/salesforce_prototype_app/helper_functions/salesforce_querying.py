@@ -22,12 +22,14 @@ def salesforce_query():
     for obj in objects["sobjects"]:
         print(obj["label"])
 
-sf = get_salesforce()
-object_name = input('Specify object name: ')
-sf_type = SFType(object_name, session_id=sf.session_id, sf_instance=sf.sf_instance)
-description = sf_type.describe()
-fields = description['fields']
-table_data = list(map(lambda x: [x['name'], x['label'], x['type']], fields))
-print(tabulate(table_data, headers=['Name', 'Label', 'SF Data Type']))
+
+def get_salesforce_fields_from_entity():
+    sf = get_salesforce()
+    object_name = input('Specify object name: ')
+    sf_type = SFType(object_name, session_id=sf.session_id, sf_instance=sf.sf_instance)
+    description = sf_type.describe()
+    fields = description['fields']
+    table_data = list(map(lambda x: [x['name'], x['label'], x['type']], fields))
+    print(tabulate(table_data, headers=['Name', 'Label', 'SF Data Type']))
 
 

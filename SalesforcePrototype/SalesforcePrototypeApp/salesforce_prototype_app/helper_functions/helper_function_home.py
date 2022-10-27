@@ -1,0 +1,4 @@
+from salesforce_querying import get_salesforce_fields_from_entity, salesforce_query
+
+
+get_salesforce_fields_from_entity()
