@@ -53,7 +53,10 @@ class SalesforcePrototypeStorageConstruct(Construct):
                                   bucket_name=properties.base_name,
                                   removal_policy=RemovalPolicy.DESTROY,
                                   block_public_access=aws_s3.BlockPublicAccess.BLOCK_ALL,
-                                  object_ownership=aws_s3.ObjectOwnership.BUCKET_OWNER_ENFORCED)
+                                  object_ownership=aws_s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
+                                  encryption=aws_s3.BucketEncryption.KMS,
+                                  bucket_key_enabled=True
+                                  )
 
         self.bucket = s3_bucket
 
