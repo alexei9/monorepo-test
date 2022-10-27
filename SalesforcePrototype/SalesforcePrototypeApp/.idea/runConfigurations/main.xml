@@ -4,7 +4,6 @@
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
-      <env name="PYTHONUNBUFFERED" value="1" />
       <env name="CRUK_AWS_PROFILE_NAME" value="crukbidev" />
       <env name="CRUK_AWS_REGION_NAME" value="eu-west-2" />
     </envs>
@@ -15,7 +14,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/salesforce_prototype_app/main.py" />
     <option name="PARAMETERS" value="" />
-    <option name="SHOW_COMMAND_LINE" value="false" />
+    <option name="SHOW_COMMAND_LINE" value="true" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />
     <option name="REDIRECT_INPUT" value="false" />

@@ -4,7 +4,9 @@ from salesforce_prototype_app.utilities.salesforce_poc import salesforce_poc, pu
 from salesforce_prototype_app.utilities.copyinto_snowflake import copyinto_snowflake, truncate_snowflaketable
 from salesforce_prototype_app.utilities.snowflake_config import get_valid_salesforce_entities
 from salesforce_prototype_app.utilities.snowflake_merge import mergeinto_snowflake
-
+from salesforce_prototype_app.helper_functions.testing2 import do_something
+from enum import Enum
+import os
 
 if __name__ == '__main__':
     print('Starting Salesforce ELT process...')
@@ -35,3 +37,5 @@ if __name__ == '__main__':
 
     # new code in here to move data from loading into proper schema
         mergeinto_snowflake(salesforce_entity_name)
+
+

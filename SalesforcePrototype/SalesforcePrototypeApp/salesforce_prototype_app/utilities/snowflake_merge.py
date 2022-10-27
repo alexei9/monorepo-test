@@ -34,4 +34,4 @@ def mergeinto_snowflake(salesforce_entity_name):
 
     cursor.execute(sql)
 
-    print(f'{salesforce_entity_name} has been copied into Snowflake')
+    print(f'{salesforce_entity_name} has been merged into Snowflake')

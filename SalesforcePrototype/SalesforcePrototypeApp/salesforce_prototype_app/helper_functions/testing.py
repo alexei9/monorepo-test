@@ -1,8 +1,8 @@
+import os
 
-
-from salesforce_prototype_app.utilities.get_connections import get_awsclient
-get_awsclient("secretsmanager")
-get_awsclient("s3")
+# from salesforce_prototype_app.utilities.get_connections import get_awsclient
+# get_awsclient("secretsmanager")
+# get_awsclient("s3")
 
 #
 # from salesforce_prototype_app.utilities.get_connections import get_salesforce
@@ -10,6 +10,9 @@ get_awsclient("s3")
 # sf = get_salesforce()
 # description = sf.Account.describe()
 # print(description)
+
+
+print(os.getenv('CRUK_AWS_PROFILE_NAME'))
 
 
 
