@@ -38,5 +38,5 @@ if __name__ == '__main__':
     # new code in here to move data from loading into proper schema
         mergeinto_snowflake(salesforce_entity_name)
 
-        print("push-on-deploy testing complete - bye")
+        print("push-on-deploy testing complete - bye Alex")
 
