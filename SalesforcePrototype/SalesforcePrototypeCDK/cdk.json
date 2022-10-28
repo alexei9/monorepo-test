@@ -150,7 +150,7 @@
             "S3UploadTimeoutSeconds": "60",
             "SnowflakeMaxConcurrency": "4",
             "SnowflakeMaxAttempts": "3",
-            "SnowflakeRetryDelaySeconds": 30,
+            "SnowflakeRetryDelaySeconds": "30",
             "AnonymiseSensitiveData": "Y"
           },
           "task-definition-env-vars": {
