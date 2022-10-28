@@ -1,5 +1,5 @@
 -- CICD-SCRIPT-TYPE: CREATE_USER
--- CICD-USER-NAME: SVC_{ENV}_{SOLUTION_NAME}
+-- CICD-USER-NAME: {SERVICE_USER_NAME}
 -- CICD-SECRET-NAME: cruk-bi-{env}-{solution-name}-svc-creds
 -- CICD-VAR: SOLUTION_NAME
 -- CICD-VAR: solution-name
