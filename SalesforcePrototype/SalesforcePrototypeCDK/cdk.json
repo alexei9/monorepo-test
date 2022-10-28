@@ -140,7 +140,7 @@
             "notifications-email-address": ""
           },
           "systems-manager-parameter-values": {
-            "CRUK_Enabled": "Y",
+            "Enabled": "Y",
             "ResumeRefreshUntilAgeHours": "18",
             "ExtractMaxConcurrency": "8",
             "ExtractMaxAttempts": "3",
