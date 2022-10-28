@@ -53,11 +53,18 @@
         "snowflake-db-deploy": true
       },
       "systems-manager-parameters": {
-        "enabled": "n",
-        "dummyparameter": "dummyvalue",
-        "dummyparameter2": "dummyvalue2",
-        "dummyparameter3": "dummyvalue3",
-        "dummyparameter4": "dummyvalue4"
+            "Enabled": "Y to enable the ELT app, any other value to disable.",
+            "ResumeRefreshUntilAgeHours": "Placeholder",
+            "ExtractMaxConcurrency": "Placeholder",
+            "ExtractMaxAttempts": "Placeholder",
+            "ExtractRelayDelaySeconds": "Placeholder",
+            "S3UploadMaxAttempts": "Placeholder",
+            "S3UploadRetryDelaySeconds": "Placeholder",
+            "S3UploadTimeoutSeconds": "Placeholder",
+            "SnowflakeMaxConcurrency": "Placeholder",
+            "SnowflakeMaxAttempts": "Placeholder",
+            "SnowflakeRetryDelaySeconds": "Placeholder",
+            "AnonymiseSensitiveData": "Placeholder"
       },
       "region": "eu-west-2",
       "environments": {
