@@ -140,11 +140,18 @@
             "notifications-email-address": ""
           },
           "systems-manager-parameter-values": {
-            "enabled": "Y",
-            "dummyparameter": "dummyvalue",
-            "dummyparameter2": "dummyvalue2",
-            "dummyparameter3": "dummyvalue3",
-            "dummyparameter4": "dummyvalue4"
+            "CRUK_Enabled": "Y",
+            "ResumeRefreshUntilAgeHours": "18",
+            "ExtractMaxConcurrency": "8",
+            "ExtractMaxAttempts": "3",
+            "ExtractRelayDelaySeconds": "120",
+            "S3UploadMaxAttempts": "3",
+            "S3UploadRetryDelaySeconds": "60",
+            "S3UploadTimeoutSeconds": "60",
+            "SnowflakeMaxConcurrency": "4",
+            "SnowflakeMaxAttempts": "3",
+            "SnowflakeRetryDelaySeconds": 30,
+            "AnonymiseSensitiveData": "Y"
           },
           "task-definition-env-vars": {
             "CRUK_SERVICE_NAME": "Salesforce-Prototype-ELT",
