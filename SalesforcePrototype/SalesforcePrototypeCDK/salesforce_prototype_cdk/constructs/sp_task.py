@@ -334,7 +334,7 @@ class SalesforcePrototypeTaskConstruct(Construct):
         container_secrets['CRUK_SECRET_SNOWFLAKE_RSA_KEY_PASSPHRASE'] = snowflake_rsa_passphrase_secret
 
         fargate_task_definition.add_container(
-            id='container',
+            id='container',1
             cpu=512,
             environment=task_definition_env_vars,
             secrets=container_secrets,
