@@ -136,7 +136,7 @@
           "settings": {
             "use-default-root-name": "Y",
             "snowflake-principal-arn": "arn:aws:iam::955432237571:role/AGEORGE-Dev-Salesforce-Proto-snowflakeroleEA171944-GVI3WX62JILW",
-            "snowflake-principal-external-id": "",
+            "snowflake-principal-external-id": "CRUK_SFCRole=85_S6QvTjtJVoUI3jf6XehXoT5h4ZI=",
             "notifications-email-address": ""
           },
           "systems-manager-parameter-values": {
