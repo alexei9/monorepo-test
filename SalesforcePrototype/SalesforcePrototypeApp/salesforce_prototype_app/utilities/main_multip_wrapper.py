@@ -14,7 +14,7 @@ def main_multip_wrapper(sf_entity_name):
 
         # connect to salesforce
 
-    salesforce_entity_name = sf_entity_name[0]
+    salesforce_entity_name = sf_entity_name
     print(f'Currently processing {salesforce_entity_name}')
 
     # truncate loading tables
