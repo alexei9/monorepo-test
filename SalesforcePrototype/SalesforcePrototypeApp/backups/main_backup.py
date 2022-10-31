@@ -7,8 +7,6 @@ from salesforce_prototype_app.utilities.snowflake_merge import mergeinto_snowfla
 from salesforce_prototype_app.helper_functions.testing2 import do_something
 from enum import Enum
 import os
-from multiprocessing import Process
-from salesforce_prototype_app.utilities.main_multip_wrapper import main_multip_wrapper
 
 if __name__ == '__main__':
     print('Starting Salesforce ELT process...')
@@ -18,9 +16,27 @@ if __name__ == '__main__':
 
     valid_salesforce_entities = get_valid_salesforce_entities()
     for sf_entity_name in valid_salesforce_entities:
+        # connect to salesforce
 
-        process = Process(target=main_multip_wrapper(sf_entity_name))
-        process.start()
+        salesforce_entity_name = sf_entity_name[0]
+        print(f'Currently processing {salesforce_entity_name}')
 
+        # truncate loading tables
+        truncate_snowflaketable(salesforce_entity_name)
 
+        row_generator = pull_salesforce_entity(salesforce_entity_name)
+
+        # write to s3 and get the filename which is then specified in Snowflake COPY INTO
+        filename = write_target_rows_yield_json_s3(row_generator, salesforce_entity_name)
+
+        copyinto_snowflake(salesforce_entity_name, filename)
+
+    # question for later - which is more efficient - should this be one loop or two (one at present)?
+    # Option 1. Pull Entity, Write Entity to S3, Write S3 file to Snowflake
+    # Option 2. Pull Entity, Write Entity to S3, Pull next Entity, Write Next Entity to S3 (then loop to Snowflake)
+
+    # new code in here to move data from loading into proper schema
+        mergeinto_snowflake(salesforce_entity_name)
+
+        print("push-on-deploy testing complete - hello testing")
 
