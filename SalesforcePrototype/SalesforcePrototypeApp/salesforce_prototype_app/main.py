@@ -17,10 +17,12 @@ if __name__ == '__main__':
     # print(get_user_secret_from_aws("ageorge-dev-salesforce-prototype"))
 
     valid_salesforce_entities = get_valid_salesforce_entities()
-    for sf_entity_name in valid_salesforce_entities:
 
-        process = Process(target=main_multip_wrapper(sf_entity_name))
-        process.start()
+    #     # https://superfastpython.com/multiprocessing-for-loop/
+    processes = [Process(target=main_multip_wrapper, args=(sf_entity_name,)) for sf_entity_name in valid_salesforce_entities]
+    for process in processes:
+            process.start()
 
 
+    print("Processing complete")
 
