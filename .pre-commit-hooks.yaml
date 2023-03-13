@@ -1,0 +1,5 @@
+-   id: requirements_txt
+    name: requirements_txt
+    entry: main.py
+    language: python
+    types: [text]
